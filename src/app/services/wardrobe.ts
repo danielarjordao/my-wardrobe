@@ -8,7 +8,7 @@ import { ClothingItem } from '../models/clothing-item';
 
 export class WardrobeService {
   // Key used to store data in the browser's LocalStorage
-  private storageKey = 'my_wardrobe_data';
+  private storageKey: string = 'my_wardrobe_data';
 
   // Dynamic lists for the form dropdowns and UI filters
   availableCategories: string[] = ['Tops', 'Bottoms', 'Jackets', 'Shoes', 'Accessories'];
@@ -34,7 +34,7 @@ export class WardrobeService {
     if (typeof localStorage === 'undefined') {
       return [];
     }
-    const data = localStorage.getItem(this.storageKey);
+    const data: string | null = localStorage.getItem(this.storageKey);
     // If data exists, parse it; otherwise, return an empty array
     return data ? JSON.parse(data) : [];
   }
@@ -47,7 +47,7 @@ export class WardrobeService {
 
   // Create: Add a new item
   addItem(item: ClothingItem): void {
-    const items = this.getAllItems();
+    const items: ClothingItem[] = this.getAllItems();
     // Generate a simple unique ID and set the creation date
     item.id = Date.now().toString();
     item.createdAt = new Date();
@@ -57,9 +57,9 @@ export class WardrobeService {
 
   // Update: Modify an existing item
   updateItem(updatedItem: ClothingItem): void {
-    const items = this.getAllItems();
+    const items: ClothingItem[] = this.getAllItems();
     // Find the index of the item to update and replace it with the updated version
-    const index = items.findIndex(item => item.id === updatedItem.id);
+    const index: number = items.findIndex(item => item.id === updatedItem.id);
    // If the item exists, update it; otherwise, do nothing
     if (index !== -1) {
       items[index] = updatedItem;
@@ -70,7 +70,7 @@ export class WardrobeService {
   // Delete: Remove an item
   deleteItem(id: string): void {
     // Filter out the item with the specified ID and save the updated list back to storage
-    const items = this.getAllItems().filter(item => item.id !== id);
+    const items: ClothingItem[] = this.getAllItems().filter(item => item.id !== id);
     this.saveToStorage(items);
   }
 
