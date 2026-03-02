@@ -38,7 +38,7 @@
         <span class="badge">{{ mostValue.status }}</span>
         <h3>{{ mostValue.name }}</h3>
         <p>{{ mostValue.price | currency:'EUR' }}</p>
-        <button class="btn-primary">View Details</button>
+        <button class="btn-primary" routerLink="/clothes/detail/{{ mostValue.id }}">View Details</button>
       </div>
     </div>
   </section>

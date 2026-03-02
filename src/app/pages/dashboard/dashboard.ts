@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common'; // Required for *ngIf and currency pipe
 import { WardrobeService } from '../../services/wardrobe';
 import { ClothingItem } from '../../models/clothing-item';
+import { RouterLink, RouterLinkActive } from '@angular/router'; // Required for navigation
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink, RouterLinkActive],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss'
 })
@@ -27,7 +28,7 @@ export class Dashboard {
 
   // Method to calculate all KPIs and set the latest item
   calculateKPIs(): void {
-    const items = this.wardrobeService.getAllItems();
+    const items: ClothingItem[] = this.wardrobeService.getAllItems();
 
     // KPI 1: Total items
     this.totalItems = items.length;
@@ -40,7 +41,7 @@ export class Dashboard {
 
     // Highlight: Most valuable item (highest price)
     if (items.length > 0) {
-      const sortedItems = items.sort((a, b) =>
+      const sortedItems: ClothingItem[] = items.sort((a, b) =>
         b.price - a.price
       );
       this.mostValue = sortedItems[0];
