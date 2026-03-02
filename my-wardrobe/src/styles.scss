@@ -1,0 +1,45 @@
+/* Global CSS Variables */
+:root {
+  --bg-dark: #2F2325;
+  --rust: #A45A49;
+  --peach: #E68E7B;
+  --white: #FFFFFF;
+  --blue: #97D4D9;
+  --green: #B3DFD3;
+  --yellow: #EFC764;
+  --soft-pink: #FFF2E7;
+  --text-main: #171211;
+  --text-muted: #846862;
+  --border-color: #e1d8d6;
+}
+
+/* Global Styles */
+body {
+  font-family: 'Manrope', sans-serif;
+  background-color: var(--soft-pink);
+  color: var(--text-main);
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Ensure all elements use border-box for consistent sizing */
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+/* Custom scrollbar for webkit browsers */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #dcdcdc;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--rust);
+}
