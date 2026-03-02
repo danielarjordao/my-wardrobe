@@ -1,1 +1,22 @@
-<p>navbar works!</p>
+<header class="navbar-container">
+  <div class="navbar-brand" routerLink="/dashboard">
+    <span class="material-symbols-outlined logo-icon">checkroom</span>
+    <h2>Wardrobe Manager</h2>
+  </div>
+
+  <div class="navbar-actions">
+	<nav class="navbar-links">
+		<a routerLink="/dashboard" routerLinkActive="active" class="nav-item">
+		Dashboard
+		</a>
+		<a routerLink="/clothes" routerLinkActive="active" class="nav-item">
+		My Wardrobe
+		</a>
+	</nav>
+
+    <button class="btn-primary" routerLink="/clothes/new">
+      <span class="material-symbols-outlined">add</span>
+      Add Item
+    </button>
+  </div>
+</header>

@@ -1,0 +1,98 @@
+/* Navbar Styles */
+.navbar-container {
+  display: grid;
+  grid-template-columns: 2fr 3fr;
+  grid-template-areas: "brand actions";
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background-color: var(--white);
+  border-bottom: 1px solid var(--border-color);
+  top: 0;
+}
+
+/* Brand Section */
+.navbar-brand {
+  grid-area: brand;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  cursor: pointer;
+  color: var(--text-main);
+
+  /* Logo */
+  .logo-icon {
+    color: var(--rust);
+    font-size: 2rem;
+  }
+
+  /* Brand Name */
+  h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 800;
+  }
+}
+
+.navbar-actions {
+  grid-area: actions;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 2rem;
+}
+
+/* Navigation Section */
+.navbar-links {
+  display: flex;
+  gap: 2rem;
+
+  /* Nav Item */
+  .nav-item {
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 1rem;
+    padding-bottom: 0.25rem;
+    border-bottom: 2px solid transparent;
+
+	/* Nav Link */
+    &:hover {
+	  font-style: bold;
+      color: var(--rust);
+      border-bottom-color: var(--rust);
+    }
+
+    /* Angular adds this class automatically via routerLinkActive */
+    &.active {
+      color: var(--text-main);
+      border-bottom-color: var(--rust);
+    }
+  }
+}
+
+/* Action Section */
+.navbar-actions {
+	/* Button */
+  .btn-primary {
+	display: flex;
+	align-items: center;
+    gap: 0.5rem;
+    background-color: var(--rust);
+    color: var(--white);
+    border: none;
+    padding: 0.6rem;
+    border-radius: 0.5rem;
+	font-style: bold;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+	/* Icon */
+    &:hover {
+      background-color: var(--primary-hover, var(--peach));
+    }
+    .material-symbols-outlined {
+      font-size: 1.25rem;
+    }
+  }
+}
