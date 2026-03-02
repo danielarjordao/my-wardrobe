@@ -4,6 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-kpi-card',
   imports: [],
   templateUrl: './kpi-card.html',
-  styleUrl: './kpi-card.scss',
+  styleUrl: './kpi-cardcss',
 })
 export class KpiCard {}

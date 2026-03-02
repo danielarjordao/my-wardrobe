@@ -4,6 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-wardrobe-list',
   imports: [],
   templateUrl: './wardrobe-list.html',
-  styleUrl: './wardrobe-list.scss',
+  styleUrl: './wardrobe-listcss',
 })
 export class WardrobeList {}
