@@ -1,1 +1,45 @@
-<p>dashboard works!</p>
+<div class="dashboard-container">
+  <header class="dashboard-header">
+    <h1>Dashboard</h1>
+    <p>Real-time overview of your wardrobe.</p>
+  </header>
+
+  <section class="kpi-grid">
+    <div class="kpi-card">
+      <span class="material-symbols-outlined icon-apparel">apparel</span>
+      <div class="kpi-info">
+        <p>Total Items</p>
+        <h3>{{ totalItems }}</h3>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <span class="material-symbols-outlined icon-payments">payments</span>
+      <div class="kpi-info">
+        <p>Estimated Value</p>
+        <h3>{{ totalValue | currency:'EUR' }}</h3>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <span class="material-symbols-outlined icon-laundry">laundry</span>
+      <div class="kpi-info">
+        <p>In Laundry</p>
+        <h3>{{ itemsInLaundry }}</h3>
+      </div>
+    </div>
+  </section>
+
+  <section class="highlight-section" *ngIf="mostValue">
+    <h2>Most Valuable Item</h2>
+    <div class="highlight-card">
+      <div class="highlight-image" [style.backgroundImage]="'url(' + mostValue.imageUrl + ')'"></div>
+      <div class="highlight-details">
+        <span class="badge">{{ mostValue.status }}</span>
+        <h3>{{ mostValue.name }}</h3>
+        <p>{{ mostValue.price | currency:'EUR' }}</p>
+        <button class="btn-primary">View Details</button>
+      </div>
+    </div>
+  </section>
+</div>

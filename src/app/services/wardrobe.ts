@@ -18,6 +18,9 @@ export class WardrobeService {
 
   // On service initialization, ensure there's at least one item in storage for the dashboard to display
   constructor() {
+    if (typeof localStorage === 'undefined') {
+      return;
+    }
     // If no items exist, seed with a default item
     if (!this.getAllItems().length) {
       this.seedInitialData();
@@ -28,6 +31,9 @@ export class WardrobeService {
 
   // Read: Get all items
   getAllItems(): ClothingItem[] {
+    if (typeof localStorage === 'undefined') {
+      return [];
+    }
     const data = localStorage.getItem(this.storageKey);
     // If data exists, parse it; otherwise, return an empty array
     return data ? JSON.parse(data) : [];
