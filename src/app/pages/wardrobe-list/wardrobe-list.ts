@@ -29,7 +29,7 @@ export class WardrobeList {
     this.categories = this.wardrobeService.availableCategories;
     this.statuses = this.wardrobeService.availableStatuses;
     // Garante que esta variável existe no teu service, ou muda para um array estático aqui
-    this.sortOptions = ['Newest', 'Oldest', 'Price: Low to High', 'Price: High to Low'];
+    this.sortOptions = this.wardrobeService.sortOptions;
   }
 
   searchFilter(items: ClothingItem[], term: string): ClothingItem[] {
