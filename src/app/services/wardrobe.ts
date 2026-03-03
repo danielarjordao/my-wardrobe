@@ -15,6 +15,7 @@ export class WardrobeService {
   availableStatuses: string[] = ['Available', 'In Laundry', 'Packed'];
   availableColors: string[] = ['Black', 'White', 'Blue', 'Red', 'Multicolor'];
   availableBrands: string[] = ['Nike', 'Adidas', 'Zara'];
+  sortingOptions: string[] = ['Newest', 'Oldest', 'Price: Low to High', 'Price: High to Low'];
 
   // On service initialization, ensure there's at least one item in storage for the dashboard to display
   constructor() {
@@ -83,18 +84,21 @@ export class WardrobeService {
 
   // Inject 1 test item just so the dashboard isn't completely empty at first
   private seedInitialData(): void {
-    const dummyItem: ClothingItem = {
-      id: '123456789',
-      createdAt: new Date(),
-      name: 'Blazer with pattern',
-      category: 'Jackets',
-      color: 'Multicolor',
-      brand: 'Zara',
-      price: 85.00,
-      imageUrl: 'https://static.zara.net/assets/public/1bc5/9290/f55f4a25bb72/4d1556db3a02/02036641031-e1/02036641031-e1.jpg?ts=1770912338700&w=579',
-      status: 'Available',
-      notes: 'It has a stain on the left sleeve, take to the laundry.'
-    };
-    this.saveToStorage([dummyItem]);
+    const id: string = Date.now().toString();
+    for (let i = 0; i < 10; i++) {
+      const dummyItem: ClothingItem = {
+        id: id + '_' + i,
+        createdAt: new Date(),
+        name: 'Blazer with pattern',
+        category: 'Jackets',
+        color: 'Multicolor',
+        brand: 'Zara',
+        price: 85.00,
+        imageUrl: 'https://static.zara.net/assets/public/1bc5/9290/f55f4a25bb72/4d1556db3a02/02036641031-e1/02036641031-e1.jpg?ts=1770912338700&w=579',
+        status: 'Available',
+        notes: 'It has a stain on the left sleeve, take to the laundry.'
+      };
+      this.saveToStorage([dummyItem]);
+    }
   }
 }

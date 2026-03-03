@@ -1,1 +1,64 @@
-<p>wardrobe-list works!</p>
+<div class="list-container">
+  <header class="list-header">
+    <div>
+      <h1>My Wardrobe</h1>
+      <p>Manage your collection ({{ filteredAndSortedItems.length }} items)</p>
+    </div>
+  </header>
+
+  <section class="filters-bar">
+    <div class="search-box">
+      <span class="material-symbols-outlined">search</span>
+      <input type="text" [(ngModel)]="searchTerm" placeholder="Search by name or brand...">
+    </div>
+
+    <div class="dropdowns">
+      <select [(ngModel)]="selectedCategory" class="filter-select">
+        <option value="">All Categories</option>
+          @for ( cat of categories; track cat ) {
+            <option value="{{ cat }}">{{ cat }}</option>
+          }
+      </select>
+
+      <select [(ngModel)]="selectedStatus" class="filter-select">
+        <option value="">All Statuses</option>
+          @for ( status of statuses; track status ) {
+            <option value="{{ status }}">{{ status }}</option>
+          }
+      </select>
+
+      <select [(ngModel)]="selectedSort" class="filter-select">
+        <option value="">Default Sort</option>
+        @for ( option of sortOptions; track option ) {
+          <option value="{{ option }}">{{ option }}</option>
+        }
+      </select>
+    </div>
+  </section>
+
+  <section class="grid-section">
+    @if (filteredAndSortedItems.length === 0) {
+      <div class="empty-state">
+        <span class="material-symbols-outlined">sentiment_dissatisfied</span>
+        <p>No items found matching your filters.</p>
+      </div>
+    }
+
+    @for ( item of filteredAndSortedItems ; track item ) {
+      <div class="item-card" [routerLink]="['/clothes/detail']" [state]="{ item: item }">
+        <div class="card-image" [style.backgroundImage]="'url(' + item.imageUrl + ')'">
+          <span class="status-badge" [ngClass]="getStatusClass(item.status)">
+            <span class="dot"></span> {{ item.status }}
+          </span>
+        </div>
+      <div class="card-details">
+        <div class="card-title-row">
+          <h3>{{ item.name }}</h3>
+          <span class="price">{{ item.price | currency:'EUR' }}</span>
+        </div>
+        <p>{{ item.brand }} • {{ item.category }}</p>
+        </div>
+      </div>
+    }
+  </section>
+</div>
