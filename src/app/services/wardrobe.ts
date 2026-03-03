@@ -15,7 +15,7 @@ export class WardrobeService {
   availableStatuses: string[] = ['Available', 'In Laundry', 'Packed'];
   availableColors: string[] = ['Black', 'White', 'Blue', 'Red', 'Multicolor'];
   availableBrands: string[] = ['Nike', 'Adidas', 'Zara'];
-  sortingOptions: string[] = ['Newest', 'Oldest', 'Price: Low to High', 'Price: High to Low'];
+  sortOptions: string[] = ['Newest', 'Oldest', 'Price: Low to High', 'Price: High to Low'];
 
   // On service initialization, ensure there's at least one item in storage for the dashboard to display
   constructor() {
