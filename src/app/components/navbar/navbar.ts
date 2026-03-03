@@ -7,7 +7,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router'; // Required for 
   // Import RouterLink to use routerLink="" in HTML
   imports: [RouterLink, RouterLinkActive],
   templateUrl: './navbar.html',
-  styleUrl: './navbarcss'
+  styleUrl: './navbar.css'
 })
 export class Navbar {
   // No additional logic needed for a simple navbar,

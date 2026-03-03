@@ -2,14 +2,14 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common'; // Required for *ngIf and currency pipe
 import { WardrobeService } from '../../services/wardrobe';
 import { ClothingItem } from '../../models/clothing-item';
-import { RouterLink, RouterLinkActive } from '@angular/router'; // Required for navigation
+import { RouterLink } from '@angular/router'; // Required for navigation
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive],
+  imports: [CommonModule, RouterLink],
   templateUrl: './dashboard.html',
-  styleUrl: './dashboard.scss'
+  styleUrl: './dashboard.css'
 })
 
 export class Dashboard {

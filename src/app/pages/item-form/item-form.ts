@@ -4,6 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-item-form',
   imports: [],
   templateUrl: './item-form.html',
-  styleUrl: './item-formcss',
+  styleUrl: './item-form.css',
 })
 export class ItemForm {}

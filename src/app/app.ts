@@ -9,7 +9,7 @@ import { Navbar } from './components/navbar/navbar';
   // Add NavbarComponent to the imports array
   imports: [RouterOutlet, Navbar],
   templateUrl: './app.html',
-  styleUrl: './app.scss'
+  styleUrl: './app.css'
 })
 export class App {
   title = 'My Wardrobe';
