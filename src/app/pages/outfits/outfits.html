@@ -16,8 +16,25 @@
 
     <p class="instruction">Click on items to add them to this look:</p>
 
+  <section class="filters-bar">
+    <div class="dropdowns">
+      <select [(ngModel)]="selectedCategory" class="filter-select">
+        <option value="">All Categories</option>
+          @for ( cat of categories; track cat ) {
+            <option value="{{ cat }}">{{ cat }}</option>
+          }
+      </select>
+      <select [(ngModel)]="selectedStatus" class="filter-select">
+        <option value="">All Statuses</option>
+          @for ( status of statuses; track status ) {
+            <option value="{{ status }}">{{ status }}</option>
+          }
+      </select>
+    </div>
+  </section>
+
     <div class="selection-grid">
-      <div class="selectable-item" *ngFor="let item of wardrobeItems" (click)="toggleSelection(item.id)" [ngClass]="{'selected': isSelected(item.id)}">
+      <div class="selectable-item" *ngFor="let item of filteredAndSortedItems" (click)="toggleSelection(item.id)" [ngClass]="{'selected': isSelected(item.id)}">
         <div class="item-img" [style.backgroundImage]="'url(' + item.imageUrl + ')'"></div>
 
         <div class="item-overlay" *ngIf="isSelected(item.id)">

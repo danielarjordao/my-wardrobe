@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms'; // Required for ngModel
+import { FormsModule } from '@angular/forms';
 import { WardrobeService } from '../../services/wardrobe';
 import { ClothingItem } from '../../models/clothing-item';
+import { Outfit } from '../../models/outfit';
 
 @Component({
   selector: 'app-outfits',
@@ -11,18 +12,26 @@ import { ClothingItem } from '../../models/clothing-item';
   templateUrl: './outfits.html',
   styleUrl: './outfits.css'
 })
-export class Outfits implements OnInit {
+export class Outfits {
   // Data arrays
   wardrobeItems: ClothingItem[] = [];
-  savedOutfits: any[] = [];
+  savedOutfits: Outfit[] = [];
 
   // Form state for new outfit
   newOutfitName: string = '';
   selectedItemIds: string[] = [];
 
-  constructor(private wardrobeService: WardrobeService) {}
+  selectedCategory: string = '';
+  selectedStatus: string = '';
 
-  ngOnInit(): void {
+
+  categories: string[] = [];
+  statuses: string[] = [];
+  sortOptions: string[] = [];
+
+  constructor(private wardrobeService: WardrobeService) {
+    this.categories = this.wardrobeService.availableCategories;
+    this.statuses = this.wardrobeService.availableStatuses;
     this.loadData();
   }
 
@@ -32,7 +41,6 @@ export class Outfits implements OnInit {
   }
 
   // --- Outfit Creation Logic ---
-
   toggleSelection(id: string): void {
     const index = this.selectedItemIds.indexOf(id);
     if (index > -1) {
@@ -63,7 +71,6 @@ export class Outfits implements OnInit {
   }
 
   // --- Outfit Display Logic ---
-
   deleteOutfit(id: string): void {
     const confirmDelete = confirm('Are you sure you want to delete this look?');
     if (confirmDelete) {
@@ -72,8 +79,28 @@ export class Outfits implements OnInit {
     }
   }
 
+  get filteredAndSortedItems(): ClothingItem[] {
+    // CÓPIA DO ARRAY: Isto resolve o problema de performance!
+    let result = [...this.wardrobeItems];
+
+    if (this.selectedCategory) result = this.categoryFilter(result, this.selectedCategory);
+    if (this.selectedStatus) result = this.statusFilter(result, this.selectedStatus);
+
+    return result;
+  }
+
   // Helper function to map IDs back to full ClothingItem objects for display
   getItemsForOutfit(itemIds: string[]): ClothingItem[] {
     return this.wardrobeItems.filter(item => itemIds.includes(item.id));
+  }
+
+  categoryFilter(items: ClothingItem[], category: string): ClothingItem[] {
+    if (!category) return items;
+    return items.filter(item => item.category === category);
+  }
+
+  statusFilter(items: ClothingItem[], status: string): ClothingItem[] {
+    if (!status) return items;
+    return items.filter(item => item.status === status);
   }
 }
