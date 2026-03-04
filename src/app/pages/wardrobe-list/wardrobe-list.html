@@ -45,7 +45,7 @@
     }
 
     @for ( item of filteredAndSortedItems ; track item ) {
-      <div class="item-card" [routerLink]="['/clothes/detail']" [state]="{ item: item }">
+      <div class="item-card" [routerLink]="['/clothes/edit', item.id]">
         <div class="card-image" [style.backgroundImage]="'url(' + item.imageUrl + ')'">
           <span class="status-badge" [ngClass]="getStatusClass(item.status)">
             <span class="dot"></span> {{ item.status }}
