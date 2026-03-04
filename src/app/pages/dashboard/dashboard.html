@@ -32,13 +32,13 @@
 
   <section class="highlight-section" *ngIf="mostValue">
     <h2>Most Valuable Item</h2>
-    <div class="highlight-card">
+    <div class="highlight-card" [routerLink]="['/clothes/edit', mostValue.id]">
       <div class="highlight-image" [style.backgroundImage]="'url(' + mostValue.imageUrl + ')'"></div>
       <div class="highlight-details">
         <span class="badge">{{ mostValue.status }}</span>
         <h3>{{ mostValue.name }}</h3>
         <p>{{ mostValue.price | currency:'EUR' }}</p>
-        <button class="btn-primary" routerLink="/clothes/detail/{{ mostValue.id }}">View Details</button>
+        <button class="btn-primary" routerLink="/clothes/edit/{{ mostValue.id }}">View Details</button>
       </div>
     </div>
   </section>

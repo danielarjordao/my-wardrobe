@@ -1,6 +1,7 @@
 // src/app/services/wardrobe.ts
 import { Injectable } from '@angular/core';
 import { ClothingItem } from '../models/clothing-item';
+import { Outfit } from '../models/outfit';
 
 @Injectable({
   providedIn: 'root'
@@ -11,20 +12,15 @@ export class WardrobeService {
   private storageKey: string = 'my_wardrobe_data';
 
   // Dynamic lists for the form dropdowns and UI filters
-  availableCategories: string[] = ['Tops', 'Bottoms', 'Jackets', 'Shoes', 'Accessories'];
+  availableCategories: string[] = ['Tops', 'Bottoms', 'Outerwear', 'One-Pieces', 'Shoes', 'Accessories'];
   availableStatuses: string[] = ['Available', 'In Laundry', 'Packed'];
-  availableColors: string[] = ['Black', 'White', 'Blue', 'Red', 'Multicolor'];
-  availableBrands: string[] = ['Nike', 'Adidas', 'Zara'];
+  availableColors: string[] = ['Black', 'White', 'Blue', 'Red', 'Green', 'Yellow', 'Purple', 'Pink', 'Brown', 'Gray', 'Multicolor', 'Other'];
   sortOptions: string[] = ['Newest', 'Oldest', 'Price: Low to High', 'Price: High to Low'];
 
   // On service initialization, ensure there's at least one item in storage for the dashboard to display
   constructor() {
     if (typeof localStorage === 'undefined') {
       return;
-    }
-    // If no items exist, seed with a default item
-    if (!this.getAllItems().length) {
-      this.seedInitialData();
     }
   }
 
@@ -82,23 +78,41 @@ export class WardrobeService {
     localStorage.setItem(this.storageKey, JSON.stringify(items));
   }
 
-  // Inject 1 test item just so the dashboard isn't completely empty at first
-  private seedInitialData(): void {
-    const id: string = Date.now().toString();
-    for (let i = 0; i < 10; i++) {
-      const dummyItem: ClothingItem = {
-        id: id + '_' + i,
-        createdAt: new Date(),
-        name: 'Blazer with pattern',
-        category: 'Jackets',
-        color: 'Multicolor',
-        brand: 'Zara',
-        price: 85.00,
-        imageUrl: 'https://static.zara.net/assets/public/1bc5/9290/f55f4a25bb72/4d1556db3a02/02036641031-e1/02036641031-e1.jpg?ts=1770912338700&w=579',
-        status: 'Available',
-        notes: 'It has a stain on the left sleeve, take to the laundry.'
-      };
-      this.saveToStorage([dummyItem]);
+  // --- LÓGICA DOS OUTFITS / LOOKS ---
+
+  private outfitsStorageKey = 'my_outfits_data';
+
+  // Ler: Obter todos os looks
+  getOutfits(): Outfit[] {
+    if (typeof localStorage !== 'undefined') {
+      const data = localStorage.getItem(this.outfitsStorageKey);
+      return data ? JSON.parse(data) : [];
+    }
+    return [];
+  }
+
+  // Criar: Guardar um look novo
+  addOutfit(name: string, itemIds: string[]): void {
+    const outfits: Outfit[] = this.getOutfits();
+    const newOutfit: Outfit = {
+      id: Date.now().toString(),
+      name: name,
+      itemIds: itemIds,
+    };
+
+    outfits.push(newOutfit);
+
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem(this.outfitsStorageKey, JSON.stringify(outfits));
     }
   }
+
+  // Apagar: Remover um look
+  deleteOutfit(id: string): void {
+    const outfits: Outfit[] = this.getOutfits().filter((o: any) => o.id !== id);
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem(this.outfitsStorageKey, JSON.stringify(outfits));
+    }
+  }
+
 }

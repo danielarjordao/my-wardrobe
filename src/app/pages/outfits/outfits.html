@@ -1,0 +1,57 @@
+<div class="outfits-container">
+  <header class="page-header">
+    <h1>My Looks</h1>
+    <p>Mix and match your items to create favorite outfits.</p>
+  </header>
+
+  <section class="create-section">
+    <h2>Create New Look</h2>
+
+    <div class="creation-form">
+      <input type="text" [(ngModel)]="newOutfitName" placeholder="Name your outfit (e.g. Summer Casual)..." class="outfit-input">
+      <button class="btn-primary" (click)="saveOutfit()" [disabled]="!newOutfitName || selectedItemIds.length === 0">
+        <span class="material-symbols-outlined">add_circle</span> Save Look
+      </button>
+    </div>
+
+    <p class="instruction">Click on items to add them to this look:</p>
+
+    <div class="selection-grid">
+      <div class="selectable-item" *ngFor="let item of wardrobeItems" (click)="toggleSelection(item.id)" [ngClass]="{'selected': isSelected(item.id)}">
+        <div class="item-img" [style.backgroundImage]="'url(' + item.imageUrl + ')'"></div>
+
+        <div class="item-overlay" *ngIf="isSelected(item.id)">
+          <span class="material-symbols-outlined">check_circle</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="saved-section">
+    <h2>Saved Looks</h2>
+
+    <div class="empty-state" *ngIf="savedOutfits.length === 0">
+      <span class="material-symbols-outlined">style</span>
+      <p>No outfits saved yet. Start mixing and matching above!</p>
+    </div>
+
+    <div class="outfits-list">
+      <div class="outfit-card" *ngFor="let outfit of savedOutfits">
+
+        <div class="outfit-header">
+          <h3>{{ outfit.name }}</h3>
+          <button class="btn-icon" (click)="deleteOutfit(outfit.id)" title="Delete Look">
+            <span class="material-symbols-outlined">delete</span>
+          </button>
+        </div>
+
+        <div class="outfit-items-row">
+          <div class="mini-item" *ngFor="let item of getItemsForOutfit(outfit.itemIds)" [title]="item.name">
+            <div class="mini-img" [style.backgroundImage]="'url(' + item.imageUrl + ')'"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</div>
