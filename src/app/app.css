@@ -1,14 +1,15 @@
 /* Basic layout structure */
 .app-layout {
   display: flex;
-  min-height: 100vh;
   flex-direction: column;
+  min-height: 100%;
 }
 
 .main-content {
-  flex: 1;
   padding: 2rem;
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
+  /* Flex 1 tells this container to grow and fill any remaining empty space */
+  flex: 1;
 }
