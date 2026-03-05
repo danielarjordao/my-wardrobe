@@ -1,45 +1,162 @@
 /* Global CSS Variables */
 :root {
-  --bg-dark: #2F2325;
-  --rust: #A45A49;
-  --peach: #E68E7B;
-  --white: #FFFFFF;
-  --blue: #97D4D9;
-  --green: #B3DFD3;
-  --yellow: #EFC764;
-  --soft-pink: #FFF2E7;
-  --text-main: #171211;
-  --text-muted: #846862;
-  --border-color: #e1d8d6;
+  /* Base Colors */
+  --dark: #2F2325; /* rgb(47, 35, 37) */
+  --rust: #A45A49; /* rgb(164, 90, 73) */
+  --peach: #E68E7B; /* rgb(230, 142, 123) */
+  --white: #FFFFFF; /* rgb(255, 255, 255) */
+  --blue: #97D4D9; /* rgb(151, 212, 217) */
+  --dark-blue: #0c5460; /* rgb(12, 84, 96) */
+  --green: #B3DFD3; /* rgb(179, 223, 211) */
+  --dark-green: #0f8564; /* rgb(15, 133, 100) */
+  --yellow: #EFC764; /* rgb(239, 199, 100) */
+  --dark-yellow: #856404; /* rgb(133, 100, 4) */
+  --red: #d93025; /* rgb(217, 48, 37) */
+  --soft-red: #f28b82; /* rgb(242, 139, 130) */
+  --soft-pink: #FFF2E7; /* rgb(255, 242, 231) */
+
+  /* Defined Text Colors */
+  --bg-light: var(--soft-pink);
+  --bg-secondary: var(--white);
+  --text-main: var(--rust);
+  --text-muted: var(--peach);
+  --border-color: var(--peach);
 }
 
-/* Global Styles */
-body {
-  font-family: 'Manrope', sans-serif;
-  background-color: var(--soft-pink);
-  color: var(--text-main);
+/* Universal reset: Applies border-box and removes default spacing from ALL elements */
+*, *::before, *::after {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
-/* Ensure all elements use border-box for consistent sizing */
-*, *::before, *::after {
-  box-sizing: inherit;
+html, body {
+  height: 100%;
 }
 
-/* Custom scrollbar for webkit browsers */
+/* Body Styles */
+body {
+  font-family: 'Manrope', sans-serif;
+  background-color: var(--bg-light);
+  color: var(--text-main);
+}
+
+/* Custom scrollbar for webkit browsers
+webkit-scrollbar is not supported in Firefox, but it provides personalization options for Chrome, Edge, and Safari. */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
+  background: var(--bg-secondary);
 }
 ::-webkit-scrollbar-thumb {
-  background: #dcdcdc;
+  background: rgba(164, 90, 73, 0.7);
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--rust);
+}
+
+/* Button styles */
+.btn-secondary, .btn-primary {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	padding: 0.8rem;
+	border-radius: 0.5rem;
+	font-family: inherit;
+	cursor: pointer;
+	font-size: 1rem;
+}
+
+.btn-primary {
+  background: var(--rust);
+  border: none;
+  color: var(--soft-pink);
+}
+
+.btn-primary:hover {
+  background: var(--peach);
+}
+
+.btn-secondary {
+	background: transparent;
+	border: 1px solid var(--border-color);
+	color: var(--text-muted);
+}
+
+.btn-secondary:hover {
+	background: var(--border-color);
+	color: var(--soft-pink);
+}
+
+.btn-primary:disabled,
+.btn-primary:disabled:hover
+.btn-secondary:disabled,
+.btn-secondary:disabled:hover {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Filters */
+.filters-bar {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.8rem;
+	align-items: center;
+	background: var(--white);
+	padding: 1rem;
+	border-radius: 1rem;
+	border: 1px solid var(--border-color);
+	box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+}
+
+.search-box {
+	display: flex;
+	align-items: center;
+	background: var(--soft-pink);
+	padding: 0.4rem 0.9rem;
+	border: 1px solid var(--border-color);
+	border-radius: 0.5rem;
+	/* Make the search box take up remaining space */
+	flex: 1;
+	min-width: 200px;
+}
+
+.search-box .material-symbols-outlined {
+	color: var(--text-muted);
+	margin-right: 0.5rem;
+}
+
+.search-box input {
+	border: none;
+	background: transparent;
+	/* Outline: none to remove default focus outline and add my own styles on focus */
+	outline: none;
+	width: 100%;
+	font-family: inherit;
+	font-size: 1rem;
+	color: var(--text-main);
+}
+
+.dropdowns {
+	display: flex;
+	gap: 0.5rem;
+	flex-wrap: wrap;
+}
+
+.filter-select {
+	padding: 0.5rem 1rem;
+	border: 1px solid var(--border-color);
+	border-radius: 0.5rem;
+	background: var(--white);
+	font-family: inherit;
+	font-size: 0.9rem;
+	color: var(--text-main);
+	cursor: pointer;
+	outline: none;
+}
+
+.filter-select:focus {
+	border-color: var(--yellow);
 }
