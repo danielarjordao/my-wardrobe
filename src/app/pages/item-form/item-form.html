@@ -3,8 +3,16 @@
     <a routerLink="/clothes" class="back-link">
       <span class="material-symbols-outlined">chevron_left</span> Back to Wardrobe
     </a>
-    <h1>{{ isEditMode ? 'Edit Item' : 'Add New Item' }}</h1>
-    <p>Fill in the details below.</p>
+    <h1>{{ isEditMode ? 'Item Details' : 'Add New Item' }}</h1>
+    <div class="form-intro">
+      <p>Fill in the details below.</p>
+      @if ( isEditMode && isReadOnly ) {
+        <button class="btn-secondary" (click)="enableEditing()">
+          <span class="material-symbols-outlined">edit</span>
+          Edit Item
+        </button>
+      }
+    </div>
   </div>
 
   <form [formGroup]="itemForm" (ngSubmit)="onSubmit()" class="clothing-form">
@@ -12,45 +20,65 @@
     <div class="form-row">
       <div class="form-group full-width">
         <label>Item Name *</label>
-        <input type="text" formControlName="name" placeholder="e.g. Vintage Denim Jacket" [class.input-error]="isFieldInvalid('name')">
-        <span class="error-msg" *ngIf="isFieldInvalid('name')">Name is required.</span>
+        <input type="text" formControlName="name" placeholder="e.g. Vintage Denim Jacket"
+               [class.input-error]="isFieldInvalid('name')">
+        @if (isFieldInvalid('name')) {
+          <span class="error-msg">Name is required.</span>
+        }
       </div>
     </div>
 
     <div class="form-row">
       <div class="form-group">
         <label>Category *</label>
-        <select formControlName="category" [class.input-error]="isFieldInvalid('category')">
+        <select formControlName="category"
+                [class.input-error]="isFieldInvalid('category')">
           <option value="" disabled>Select Category</option>
-		  @for ( cat of categories; track cat ) {
-			<option value="{{ cat }}">{{ cat }}</option>
-		  }
+          @for ( cat of categories; track cat ) {
+            <option value="{{ cat }}">{{ cat }}</option>
+          }
         </select>
-        <span class="error-msg" *ngIf="isFieldInvalid('category')">Category is required.</span>
+
+        @if (isFieldInvalid('category')) {
+          <span class="error-msg">Category is required.</span>
+        }
       </div>
 
       <div class="form-group">
         <label>Color *</label>
-        <select formControlName="color" [class.input-error]="isFieldInvalid('color')">
+        <select formControlName="color"
+                [class.input-error]="isFieldInvalid('color')">
           <option value="" disabled>Select Color</option>
-		  @for ( color of colors; track color ) {
-			<option value="{{ color }}">{{ color }}</option>
-		  }
+          @for ( color of colors; track color ) {
+            <option value="{{ color }}">{{ color }}</option>
+          }
         </select>
-        <span class="error-msg" *ngIf="isFieldInvalid('color')">Color is required.</span>
+
+        @if (isFieldInvalid('color')) {
+          <span class="error-msg">Color is required.</span>
+        }
       </div>
     </div>
 
     <div class="form-row">
       <div class="form-group">
-        <label>Brand</label>
-        <input type="text" formControlName="brand" placeholder="e.g. Zara" list="brandOptions">
+        <label>Brand *</label>
+        <input type="text" formControlName="brand" placeholder="e.g. Zara"
+            [class.input-error] = "isFieldInvalid('brand')">
+
+        @if (isFieldInvalid('brand')) {
+          <span class="error-msg">Brand is required.</span>
+        }
       </div>
 
       <div class="form-group">
         <label>Price *</label>
-        <input type="number" formControlName="price" placeholder="0.00" step="0.01" [class.input-error]="isFieldInvalid('price')">
-        <span class="error-msg" *ngIf="isFieldInvalid('price')">Enter a valid positive price.</span>
+        <input type="number" formControlName="price" placeholder="0.00" step="0.01"
+               [class.input-error]="isFieldInvalid('price')">
+
+        @if (isFieldInvalid('price')) {
+          <span class="error-msg">Enter a valid positive price.</span>
+        }
       </div>
     </div>
 
@@ -58,18 +86,20 @@
       <div class="form-group">
         <label>Status *</label>
         <select formControlName="status">
-		  @for ( status of statuses; track status ) {
-			<option value="{{ status }}">{{ status }}</option>
-		  }
+          @for ( status of statuses; track status ) {
+            <option value="{{ status }}">{{ status }}</option>
+          }
         </select>
       </div>
 
       <div class="form-group">
         <label>Image URL *</label>
-        <input type="url" formControlName="imageUrl" placeholder="https://..." [class.input-error]="isFieldInvalid('imageUrl')">
-		@if ( isFieldInvalid('imageUrl') ) {
-		  <span class="error-msg">Must be a valid URL starting with http:// or https://</span>
-		}
+        <input type="url" formControlName="imageUrl" placeholder="https://..."
+               [class.input-error]="isFieldInvalid('imageUrl')">
+
+        @if (isFieldInvalid('imageUrl')) {
+          <span class="error-msg">Must be a valid URL starting with http:// or https://</span>
+        }
       </div>
     </div>
 
@@ -81,17 +111,21 @@
     </div>
 
     <div class="form-actions">
+    @if (!isReadOnly) {
       <button type="button" class="btn-secondary" routerLink="/clothes">Cancel</button>
-		  @if ( isEditMode ) {
-        <button type="button" class="btn-danger" (click)="onDelete()">
+    }
+    @if ( isEditMode && !isReadOnly ) {
+        <button type="button" class="btn-secondary" (click)="onDelete()">
           <span class="material-symbols-outlined">delete</span>
           Delete Item
         </button>
+    }
+    @if (!isEditMode || !isReadOnly) {
+        <button type="submit" class="btn-primary" [disabled]="itemForm.invalid" [style.opacity]="itemForm.invalid ? '0.5' : '1'">
+          <span class="material-symbols-outlined">save</span>
+          {{ isEditMode ? 'Update Item' : 'Save Item' }}
+        </button>
       }
-      <button type="submit" class="btn-primary">
-        <span class="material-symbols-outlined">save</span>
-        {{ isEditMode ? 'Update Item' : 'Save Item' }}
-      </button>
     </div>
   </form>
 </div>
