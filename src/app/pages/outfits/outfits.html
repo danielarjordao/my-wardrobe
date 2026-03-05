@@ -16,59 +16,75 @@
 
     <p class="instruction">Click on items to add them to this look:</p>
 
-  <section class="filters-bar">
-    <div class="dropdowns">
-      <select [(ngModel)]="selectedCategory" class="filter-select">
-        <option value="">All Categories</option>
+    <div class="filters-bar">
+      <div class="dropdowns">
+        <select [(ngModel)]="selectedCategory" (ngModelChange)="applyFilters()" class="filter-select">
+          <option value="">All Categories</option>
           @for ( cat of categories; track cat ) {
             <option value="{{ cat }}">{{ cat }}</option>
           }
-      </select>
-      <select [(ngModel)]="selectedStatus" class="filter-select">
-        <option value="">All Statuses</option>
+        </select>
+
+        <select [(ngModel)]="selectedStatus" (ngModelChange)="applyFilters()" class="filter-select">
+          <option value="">All Statuses</option>
           @for ( status of statuses; track status ) {
             <option value="{{ status }}">{{ status }}</option>
           }
-      </select>
+        </select>
+
+        <select [(ngModel)]="selectedColor" (ngModelChange)="applyFilters()" class="filter-select">
+          <option value="">All Colors</option>
+          @for ( color of colors; track color ) {
+            <option value="{{ color }}">{{ color }}</option>
+          }
+        </select>
+      </div>
     </div>
-  </section>
 
     <div class="selection-grid">
-      <div class="selectable-item" *ngFor="let item of filteredAndSortedItems" (click)="toggleSelection(item.id)" [ngClass]="{'selected': isSelected(item.id)}">
-        <div class="item-img" [style.backgroundImage]="'url(' + item.imageUrl + ')'"></div>
+      @for (item of filteredItems; track item.id) {
+        <div class="selectable-item" (click)="toggleSelection(item.id)" [class.selected]="isSelected(item.id)">
+          <div class="item-img" [style.backgroundImage]="'url(' + item.imageUrl + ')'"></div>
 
-        <div class="item-overlay" *ngIf="isSelected(item.id)">
-          <span class="material-symbols-outlined">check_circle</span>
+          @if (isSelected(item.id)) {
+            <div class="item-overlay">
+              <span class="material-symbols-outlined">check_circle</span>
+            </div>
+          }
         </div>
-      </div>
+      }
     </div>
   </section>
 
   <section class="saved-section">
     <h2>Saved Looks</h2>
 
-    <div class="empty-state" *ngIf="savedOutfits.length === 0">
-      <span class="material-symbols-outlined">style</span>
-      <p>No outfits saved yet. Start mixing and matching above!</p>
-    </div>
+    @if (savedOutfits.length === 0) {
+      <div class="empty-state">
+        <span class="material-symbols-outlined">style</span>
+        <p>No outfits saved yet. Start mixing and matching above!</p>
+      </div>
+    }
 
     <div class="outfits-list">
-      <div class="outfit-card" *ngFor="let outfit of savedOutfits">
+      @for (outfit of savedOutfits; track outfit.id) {
+        <div class="outfit-card">
+          <div class="outfit-header">
+            <h3>{{ outfit.name }}</h3>
+            <button class="btn-icon" (click)="deleteOutfit(outfit.id)" title="Delete Look">
+              <span class="material-symbols-outlined">delete</span>
+            </button>
+          </div>
 
-        <div class="outfit-header">
-          <h3>{{ outfit.name }}</h3>
-          <button class="btn-icon" (click)="deleteOutfit(outfit.id)" title="Delete Look">
-            <span class="material-symbols-outlined">delete</span>
-          </button>
-        </div>
-
-        <div class="outfit-items-row">
-          <div class="mini-item" *ngFor="let item of getItemsForOutfit(outfit.itemIds)" [title]="item.name">
-            <div class="mini-img" [style.backgroundImage]="'url(' + item.imageUrl + ')'"></div>
+          <div class="outfit-items-row">
+            @for (item of getItemsForOutfit(outfit.itemIds); track item.id) {
+              <div class="mini-item" [title]="item.name">
+                <div class="mini-img" [style.backgroundImage]="'url(' + item.imageUrl + ')'"></div>
+              </div>
+            }
           </div>
         </div>
-
-      </div>
+      }
     </div>
   </section>
 </div>

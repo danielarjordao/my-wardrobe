@@ -4,6 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { WardrobeService } from '../../services/wardrobe';
 import { ClothingItem } from '../../models/clothing-item';
 import { Outfit } from '../../models/outfit';
+import { OutfitService } from '../../services/outfit';
+import { availableCategories, availableStatuses, availableColors  } from '../../models/item-options';
+import { FilterUtils } from '../../utils/filter.utils';
 
 @Component({
   selector: 'app-outfits',
@@ -12,42 +15,54 @@ import { Outfit } from '../../models/outfit';
   templateUrl: './outfits.html',
   styleUrl: './outfits.css'
 })
+
 export class Outfits {
-  // Data arrays
   wardrobeItems: ClothingItem[] = [];
   savedOutfits: Outfit[] = [];
 
-  // Form state for new outfit
+  filteredItems: ClothingItem[] = [];
+
   newOutfitName: string = '';
   selectedItemIds: string[] = [];
-
   selectedCategory: string = '';
   selectedStatus: string = '';
-
+  selectedColor: string = '';
 
   categories: string[] = [];
   statuses: string[] = [];
-  sortOptions: string[] = [];
+  colors: string[] = [];
 
-  constructor(private wardrobeService: WardrobeService) {
-    this.categories = this.wardrobeService.availableCategories;
-    this.statuses = this.wardrobeService.availableStatuses;
+  constructor(
+    private wardrobeService: WardrobeService,
+    private outfitService: OutfitService
+  ) {
+    this.categories = availableCategories;
+    this.statuses = availableStatuses;
+    this.colors = availableColors;
     this.loadData();
   }
 
   loadData(): void {
     this.wardrobeItems = this.wardrobeService.getAllItems();
-    this.savedOutfits = this.wardrobeService.getOutfits();
+    this.savedOutfits = this.outfitService.getAllOutfits();
+    this.applyFilters();
   }
 
-  // --- Outfit Creation Logic ---
+  // Call this whenever the category or status filters change
+  applyFilters(): void {
+    this.filteredItems = FilterUtils.apply(this.wardrobeItems, {
+      category: this.selectedCategory,
+      status: this.selectedStatus,
+      color: this.selectedColor
+    });
+  }
+
+  // --- Selection Logic ---
   toggleSelection(id: string): void {
     const index = this.selectedItemIds.indexOf(id);
     if (index > -1) {
-      // Remove if already selected
       this.selectedItemIds.splice(index, 1);
     } else {
-      // Add if not selected
       this.selectedItemIds.push(id);
     }
   }
@@ -56,51 +71,25 @@ export class Outfits {
     return this.selectedItemIds.includes(id);
   }
 
+  // --- Outfit Management ---
   saveOutfit(): void {
-    // Prevent saving empty outfits
     if (!this.newOutfitName.trim() || this.selectedItemIds.length === 0) return;
 
-    this.wardrobeService.addOutfit(this.newOutfitName, this.selectedItemIds);
-
-    // Reset form after saving
+    this.outfitService.addOutfit(this.newOutfitName.trim(), this.selectedItemIds);
     this.newOutfitName = '';
     this.selectedItemIds = [];
-
-    // Refresh the list
     this.loadData();
   }
 
-  // --- Outfit Display Logic ---
   deleteOutfit(id: string): void {
-    const confirmDelete = confirm('Are you sure you want to delete this look?');
-    if (confirmDelete) {
-      this.wardrobeService.deleteOutfit(id);
+    if (confirm('Are you sure you want to delete this look?')) {
+      this.outfitService.deleteOutfit(id);
       this.loadData();
     }
   }
 
-  get filteredAndSortedItems(): ClothingItem[] {
-    // CÓPIA DO ARRAY: Isto resolve o problema de performance!
-    let result = [...this.wardrobeItems];
-
-    if (this.selectedCategory) result = this.categoryFilter(result, this.selectedCategory);
-    if (this.selectedStatus) result = this.statusFilter(result, this.selectedStatus);
-
-    return result;
-  }
-
-  // Helper function to map IDs back to full ClothingItem objects for display
+  // --- Helpers ---
   getItemsForOutfit(itemIds: string[]): ClothingItem[] {
     return this.wardrobeItems.filter(item => itemIds.includes(item.id));
-  }
-
-  categoryFilter(items: ClothingItem[], category: string): ClothingItem[] {
-    if (!category) return items;
-    return items.filter(item => item.category === category);
-  }
-
-  statusFilter(items: ClothingItem[], status: string): ClothingItem[] {
-    if (!status) return items;
-    return items.filter(item => item.status === status);
   }
 }
