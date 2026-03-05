@@ -9,14 +9,14 @@ import { availableCategories, availableStatuses, availableColors  } from '../../
 import { FilterUtils } from '../../utils/filter.utils';
 
 @Component({
-  selector: 'app-outfits',
+  selector: 'app-outfits-form',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './outfits.html',
-  styleUrl: './outfits.css'
+  templateUrl: './outfit-form.html',
+  styleUrl: './outfit-form.css'
 })
 
-export class Outfits {
+export class OutfitForm {
   wardrobeItems: ClothingItem[] = [];
   savedOutfits: Outfit[] = [];
 
@@ -81,15 +81,4 @@ export class Outfits {
     this.loadData();
   }
 
-  deleteOutfit(id: string): void {
-    if (confirm('Are you sure you want to delete this look?')) {
-      this.outfitService.deleteOutfit(id);
-      this.loadData();
-    }
-  }
-
-  // --- Helpers ---
-  getItemsForOutfit(itemIds: string[]): ClothingItem[] {
-    return this.wardrobeItems.filter(item => itemIds.includes(item.id));
-  }
 }

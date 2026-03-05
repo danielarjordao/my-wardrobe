@@ -1,12 +1,10 @@
 <div class="outfits-container">
   <header class="page-header">
-    <h1>My Looks</h1>
+    <h1>Create New Outfit</h1>
     <p>Mix and match your items to create favorite outfits.</p>
   </header>
 
   <section class="create-section">
-    <h2>Create New Look</h2>
-
     <div class="creation-form">
       <input type="text" [(ngModel)]="newOutfitName" placeholder="Name your outfit (e.g. Summer Casual)..." class="outfit-input">
       <button class="btn-primary" (click)="saveOutfit()" [disabled]="!newOutfitName || selectedItemIds.length === 0">
@@ -24,14 +22,12 @@
             <option value="{{ cat }}">{{ cat }}</option>
           }
         </select>
-
         <select [(ngModel)]="selectedStatus" (ngModelChange)="applyFilters()" class="filter-select">
           <option value="">All Statuses</option>
           @for ( status of statuses; track status ) {
             <option value="{{ status }}">{{ status }}</option>
           }
         </select>
-
         <select [(ngModel)]="selectedColor" (ngModelChange)="applyFilters()" class="filter-select">
           <option value="">All Colors</option>
           @for ( color of colors; track color ) {
@@ -45,44 +41,12 @@
       @for (item of filteredItems; track item.id) {
         <div class="selectable-item" (click)="toggleSelection(item.id)" [class.selected]="isSelected(item.id)">
           <div class="item-img" [style.backgroundImage]="'url(' + item.imageUrl + ')'"></div>
-
+          <p class="subtitle-img">{{ item.name }}</p>
           @if (isSelected(item.id)) {
             <div class="item-overlay">
               <span class="material-symbols-outlined">check_circle</span>
             </div>
           }
-        </div>
-      }
-    </div>
-  </section>
-
-  <section class="saved-section">
-    <h2>Saved Looks</h2>
-
-    @if (savedOutfits.length === 0) {
-      <div class="empty-state">
-        <span class="material-symbols-outlined">style</span>
-        <p>No outfits saved yet. Start mixing and matching above!</p>
-      </div>
-    }
-
-    <div class="outfits-list">
-      @for (outfit of savedOutfits; track outfit.id) {
-        <div class="outfit-card">
-          <div class="outfit-header">
-            <h3>{{ outfit.name }}</h3>
-            <button class="btn-icon" (click)="deleteOutfit(outfit.id)" title="Delete Look">
-              <span class="material-symbols-outlined">delete</span>
-            </button>
-          </div>
-
-          <div class="outfit-items-row">
-            @for (item of getItemsForOutfit(outfit.itemIds); track item.id) {
-              <div class="mini-item" [title]="item.name">
-                <div class="mini-img" [style.backgroundImage]="'url(' + item.imageUrl + ')'"></div>
-              </div>
-            }
-          </div>
         </div>
       }
     </div>
