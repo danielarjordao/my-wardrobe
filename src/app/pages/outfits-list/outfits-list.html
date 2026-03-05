@@ -1,0 +1,29 @@
+<div class="outfits-container">
+  <header class="page-header">
+    <div class="header-titles">
+      <h1>My Outfits</h1>
+       <button routerLink="/outfits/new" class="btn-primary create-btn">
+        <span class="material-symbols-outlined">add</span>
+        Add Outfit
+      </button>
+    </div>
+    <p>Mix and match your items to create favorite outfits.</p>
+  </header>
+  <section class="saved-section">
+    @if (savedOutfits.length === 0) {
+      <div class="empty-state">
+        <span class="material-symbols-outlined">style</span>
+        <p>No outfits saved yet. Start mixing and matching!</p>
+      </div>
+    }
+    <div class="outfits-list">
+      @for (outfit of savedOutfits; track outfit.id) {
+        <app-outfit-card
+          [outfit]="outfit"
+          [allItems]="wardrobeItems"
+          (deleteClick)="deleteOutfit($event)">
+        </app-outfit-card>
+      }
+    </div>
+  </section>
+</div>
