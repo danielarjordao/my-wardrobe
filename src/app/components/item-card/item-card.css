@@ -1,0 +1,126 @@
+.item-card {
+	background: var(--bg-secondary);
+	border-radius: 1rem;
+	/* Using overflow hidden ensures that any content that exceeds the card's boundaries */
+	overflow: hidden;
+	border: 1px solid var(--border-color);
+	cursor: pointer;
+	display: flex;
+	flex-direction: column;
+}
+
+.item-card:hover {
+	border-color: var(--yellow);
+	box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+}
+
+.card-image {
+	/* Relative positioning allows the status badge to be positioned absolutely within the card, ensuring it stays anchored to the top-right corner regardless of the card's size. */
+	position: relative;
+	width: 100%;
+	/* Using a fixed aspect ratio ensures all cards have a consistent height regardless of image dimensions, creating a uniform grid layout. */
+	/* 4:5 aspect ratio is a common format for clothing items, giving a nice vertical layout */
+	aspect-ratio: 4/5;
+	background-size: cover;
+	background-position: center;
+	background-color: var(--border-color);
+	border-bottom: 1px solid var(--border-color);
+	border-radius: 0.3rem;
+}
+
+
+/* Card Text */
+.card-details {
+	padding: 1rem;
+}
+
+.card-title-row {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	gap: 0.5rem;
+	margin-bottom: 0.25rem;
+}
+
+.card-title-row h3 {
+	margin: 0;
+	font-size: 0.8rem;
+	color: var(--text-main);
+	overflow: hidden;
+}
+
+.card-details p {
+	margin: 0;
+	font-size: 0.8rem;
+	color: var(--text-muted);
+}
+
+/* The [ngClass] Dynamic Badges */
+.status-badge {
+	/* Absolute positioning allows the badge to float above the image, anchored to the top-right corner. */
+	position: absolute;
+	top: 0.1rem;
+	right: 0.1rem;
+	margin: 0.5rem;
+	padding: 0.3rem 0.6rem;
+	border-radius: 1rem;
+	font-size: 0.7rem;
+	display: flex;
+	align-items: center;
+	gap: 0.3rem;
+	background: var(--white);
+	box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+/* The dot is a small circle that visually reinforces the status color. */
+.status-badge .dot {
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+}
+
+/* Colors applied by ngClass */
+.status-green {
+	background: var(--green);
+	color: var(--dark-green);
+}
+
+.status-green .dot {
+	background-color: var(--dark-green);
+}
+
+.status-yellow {
+	background: var(--yellow);
+	color: var(--dark-yellow);
+}
+
+.status-yellow .dot {
+	background-color: var(--dark-yellow);
+}
+
+.status-blue {
+	background: var(--blue);
+	color: var(--dark-blue);
+}
+
+.status-blue .dot {
+	background-color: var(--dark-blue);
+}
+
+.status-pink {
+	background: var(--peach);
+	color: var(--rust);
+}
+
+.status-pink .dot {
+	background-color: var(--rust);
+}
+
+.status-gray {
+	background: var(--text-muted);
+	color: var(--dark);
+}
+
+.status-gray .dot {
+	background-color: var(--dark);
+}
