@@ -1,0 +1,15 @@
+<div class="outfit-card">
+    <div class="outfit-header">
+        <h3>{{ outfit.name }}</h3>
+        <button class="btn-icon" (click)="onDelete($event)" title="Delete Look">
+          <span class="material-symbols-outlined">delete</span>
+        </button>
+    </div>
+    <div class="outfit-items-row">
+    @for (item of outfitItems; track item.id) {
+        <div class="mini-item" [title]="item.name">
+            <div class="mini-img" [style.backgroundImage]="'url(' + item.imageUrl + ')'"></div>
+        </div>
+    }
+    </div>
+</div>
