@@ -1,118 +1,91 @@
-// src/app/services/wardrobe.ts
 import { Injectable } from '@angular/core';
 import { ClothingItem } from '../models/clothing-item';
-import { Outfit } from '../models/outfit';
+import { StorageService } from './storage';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 
 export class WardrobeService {
   // Key used to store data in the browser's LocalStorage
   private storageKey: string = 'my_wardrobe_data';
 
-  // Dynamic lists for the form dropdowns and UI filters
-  availableCategories: string[] = ['Tops', 'Bottoms', 'Outerwear', 'One-Pieces', 'Shoes', 'Accessories'];
-  availableStatuses: string[] = ['Available', 'In Laundry', 'Packed'];
-  availableColors: string[] = ['Black', 'White', 'Blue', 'Red', 'Green', 'Yellow', 'Purple', 'Pink', 'Brown', 'Gray', 'Multicolor', 'Other'];
-  sortOptions: string[] = ['Newest', 'Oldest', 'Price: Low to High', 'Price: High to Low'];
+  sortedByDate: ClothingItem[] = [];
+  sortedByPrice: ClothingItem[] = [];
+
 
   // On service initialization, ensure there's at least one item in storage for the dashboard to display
-  constructor() {
-    if (typeof localStorage === 'undefined') {
-      return;
-    }
+  constructor(private storage: StorageService) {
+    this.sortedByDate = this.getAllItems().sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    this.sortedByPrice = this.getAllItems().sort((a, b) => b.price - a.price);
   }
 
   // --- Core CRUD Operations ---
 
   // Read: Get all items
   getAllItems(): ClothingItem[] {
-    if (typeof localStorage === 'undefined') {
-      return [];
-    }
-    const data: string | null = localStorage.getItem(this.storageKey);
-    // If data exists, parse it; otherwise, return an empty array
-    return data ? JSON.parse(data) : [];
+    return this.storage.getAllItems<ClothingItem>(this.storageKey);
   }
 
   // Read: Get a single item by ID
   getItemById(id: string): ClothingItem | undefined {
-    // Find and return the item with the matching ID, or undefined if not found
-    return this.getAllItems().find(item => item.id === id);
+    return this.storage.getItemById<ClothingItem>(id, this.storageKey);
   }
 
   // Create: Add a new item
   addItem(item: ClothingItem): void {
-    const items: ClothingItem[] = this.getAllItems();
-    // Generate a simple unique ID and set the creation date
-    item.id = Date.now().toString();
-    item.createdAt = new Date();
-    items.push(item);
-    this.saveToStorage(items);
+    let newItem: ClothingItem = { ...item };
+    newItem.id = Date.now().toString();
+    newItem.createdAt = new Date();
+    this.storage.addItem<ClothingItem>(newItem, this.storageKey);
   }
 
   // Update: Modify an existing item
   updateItem(updatedItem: ClothingItem): void {
-    const items: ClothingItem[] = this.getAllItems();
-    // Find the index of the item to update and replace it with the updated version
-    const index: number = items.findIndex(item => item.id === updatedItem.id);
-   // If the item exists, update it; otherwise, do nothing
-    if (index !== -1) {
-      items[index] = updatedItem;
-      this.saveToStorage(items);
-    }
+    this.storage.updateItem<ClothingItem>(updatedItem, this.storageKey);
   }
 
   // Delete: Remove an item
   deleteItem(id: string): void {
-    // Filter out the item with the specified ID and save the updated list back to storage
-    const items: ClothingItem[] = this.getAllItems().filter(item => item.id !== id);
-    this.saveToStorage(items);
+    this.storage.deleteItem<ClothingItem>(id, this.storageKey);
   }
 
-  // --- Helper Methods ---
+  // -- Additional Utility Methods for Dashboard KPIs and Highlights --
 
-  // Save the array back to LocalStorage securely
-  private saveToStorage(items: ClothingItem[]): void {
-    localStorage.setItem(this.storageKey, JSON.stringify(items));
+  // Get total number of items
+  getTotalItems(): number {
+    return this.getAllItems().length;
   }
 
-  // --- LÓGICA DOS OUTFITS / LOOKS ---
-
-  private outfitsStorageKey = 'my_outfits_data';
-
-  // Ler: Obter todos os looks
-  getOutfits(): Outfit[] {
-    if (typeof localStorage !== 'undefined') {
-      const data = localStorage.getItem(this.outfitsStorageKey);
-      return data ? JSON.parse(data) : [];
-    }
-    return [];
+  // Get total value of all items
+  getTotalValue(): number {
+    return this.getAllItems().reduce((sum, item) => sum + item.price, 0);
   }
 
-  // Criar: Guardar um look novo
-  addOutfit(name: string, itemIds: string[]): void {
-    const outfits: Outfit[] = this.getOutfits();
-    const newOutfit: Outfit = {
-      id: Date.now().toString(),
-      name: name,
-      itemIds: itemIds,
-    };
-
-    outfits.push(newOutfit);
-
-    if (typeof localStorage !== 'undefined') {
-      localStorage.setItem(this.outfitsStorageKey, JSON.stringify(outfits));
-    }
+  // Get count of items in laundry
+  getItemsInLaundry(): number {
+    return this.getAllItems().filter(item => item.status === 'In Laundry').length;
   }
 
-  // Apagar: Remover um look
-  deleteOutfit(id: string): void {
-    const outfits: Outfit[] = this.getOutfits().filter((o: any) => o.id !== id);
-    if (typeof localStorage !== 'undefined') {
-      localStorage.setItem(this.outfitsStorageKey, JSON.stringify(outfits));
-    }
+  // Get the most valuable item
+  getMostValuableItem(): ClothingItem | null {
+    if (this.sortedByPrice.length === 0)
+      return null;
+    return this.sortedByPrice[0];
+  }
+
+  // Get the most recently added item
+  getMostRecentItem(): ClothingItem | null {
+    if (this.sortedByDate.length === 0)
+      return null;
+    return this.sortedByDate[0];
+  }
+
+  // Get the oldest item
+  getOldestItem(): ClothingItem | null {
+    if (this.sortedByDate.length === 0)
+       return null;
+    return this.sortedByDate[this.sortedByDate.length - 1];
   }
 
 }
