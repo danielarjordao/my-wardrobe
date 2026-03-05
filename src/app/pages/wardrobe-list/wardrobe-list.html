@@ -9,29 +9,36 @@
   <section class="filters-bar">
     <div class="search-box">
       <span class="material-symbols-outlined">search</span>
-      <input type="text" [(ngModel)]="searchTerm" placeholder="Search by name or brand...">
+      <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="applyFilters()" placeholder="Search by name or brand...">
     </div>
 
     <div class="dropdowns">
-      <select [(ngModel)]="selectedCategory" class="filter-select">
+      <select [(ngModel)]="selectedCategory" (ngModelChange)="applyFilters()" class="filter-select">
         <option value="">All Categories</option>
           @for ( cat of categories; track cat ) {
             <option value="{{ cat }}">{{ cat }}</option>
           }
       </select>
 
-      <select [(ngModel)]="selectedStatus" class="filter-select">
+      <select [(ngModel)]="selectedStatus" (ngModelChange)="applyFilters()" class="filter-select">
         <option value="">All Statuses</option>
           @for ( status of statuses; track status ) {
             <option value="{{ status }}">{{ status }}</option>
           }
       </select>
 
-      <select [(ngModel)]="selectedSort" class="filter-select">
+      <select [(ngModel)]="selectedSort" (ngModelChange)="applyFilters()" class="filter-select">
         <option value="">Default Sort</option>
         @for ( option of sortOptions; track option ) {
           <option value="{{ option }}">{{ option }}</option>
         }
+      </select>
+
+      <select [(ngModel)]="selectedColor" (ngModelChange)="applyFilters()" class="filter-select">
+        <option value="">All Colors</option>
+          @for ( color of colors; track color ) {
+            <option value="{{ color }}">{{ color }}</option>
+          }
       </select>
     </div>
   </section>
@@ -45,20 +52,7 @@
     }
 
     @for ( item of filteredAndSortedItems ; track item ) {
-      <div class="item-card" [routerLink]="['/clothes/edit', item.id]">
-        <div class="card-image" [style.backgroundImage]="'url(' + item.imageUrl + ')'">
-          <span class="status-badge" [ngClass]="getStatusClass(item.status)">
-            <span class="dot"></span> {{ item.status }}
-          </span>
-        </div>
-      <div class="card-details">
-        <div class="card-title-row">
-          <h3>{{ item.name }}</h3>
-          <span class="price">{{ item.price | currency:'EUR' }}</span>
-        </div>
-        <p>{{ item.brand }} • {{ item.category }}</p>
-        </div>
-      </div>
+      <app-item-card [item]="item"></app-item-card>
     }
   </section>
 </div>
