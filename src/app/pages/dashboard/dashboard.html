@@ -4,42 +4,49 @@
     <p>Real-time overview of your wardrobe.</p>
   </header>
 
-  <section class="kpi-grid">
-    <div class="kpi-card">
-      <span class="material-symbols-outlined icon-apparel">apparel</span>
-      <div class="kpi-info">
-        <p>Total Items</p>
-        <h3>{{ totalItems }}</h3>
-      </div>
-    </div>
+<section class="kpi-grid">
+    <app-kpi-card
+      icon="apparel"
+      iconClass="apparel"
+      title="Total Items"
+      [value]="totalItems">
+    </app-kpi-card>
 
-    <div class="kpi-card">
-      <span class="material-symbols-outlined icon-payments">payments</span>
-      <div class="kpi-info">
-        <p>Estimated Value</p>
-        <h3>{{ totalValue | currency:'EUR' }}</h3>
-      </div>
-    </div>
+    <app-kpi-card
+      icon="payments"
+      iconClass="payments"
+      title="Estimated Value"
+      [value]="totalValue | currency:'EUR'">
+    </app-kpi-card>
 
-    <div class="kpi-card">
-      <span class="material-symbols-outlined icon-laundry">laundry</span>
-      <div class="kpi-info">
-        <p>In Laundry</p>
-        <h3>{{ itemsInLaundry }}</h3>
-      </div>
-    </div>
+    <app-kpi-card
+      icon="laundry"
+      iconClass="laundry"
+      title="In Laundry"
+      [value]="itemsInLaundry">
+    </app-kpi-card>
   </section>
 
-  <section class="highlight-section" *ngIf="mostValue">
-    <h2>Most Valuable Item</h2>
-    <div class="highlight-card" [routerLink]="['/clothes/edit', mostValue.id]">
-      <div class="highlight-image" [style.backgroundImage]="'url(' + mostValue.imageUrl + ')'"></div>
-      <div class="highlight-details">
-        <span class="badge">{{ mostValue.status }}</span>
-        <h3>{{ mostValue.name }}</h3>
-        <p>{{ mostValue.price | currency:'EUR' }}</p>
-        <button class="btn-primary" routerLink="/clothes/edit/{{ mostValue.id }}">View Details</button>
+  <section class="highlight-section">
+    @if (mostValue) {
+      <div>
+        <h2>Most Valuable Item</h2>
+        <app-item-card [item]="mostValue"></app-item-card>
       </div>
-    </div>
+    }
+
+    @if (mostRecent) {
+      <div>
+        <h2>Most Recent Item</h2>
+        <app-item-card [item]="mostRecent"></app-item-card>
+      </div>
+    }
+
+    @if (Oldest) {
+      <div>
+        <h2>Oldest Item</h2>
+        <app-item-card [item]="Oldest"></app-item-card>
+      </div>
+    }
   </section>
 </div>

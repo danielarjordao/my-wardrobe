@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common'; // Required for *ngIf and currency pipe
+import { CommonModule } from '@angular/common';
 import { WardrobeService } from '../../services/wardrobe';
 import { ClothingItem } from '../../models/clothing-item';
-import { RouterLink } from '@angular/router'; // Required for navigation
+import { ItemCard } from '../../components/item-card/item-card';
+import { KpiCard } from '../../components/kpi-card/kpi-card';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, ItemCard, KpiCard],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
 })
@@ -20,6 +21,8 @@ export class Dashboard {
 
   // Highlight variable
   mostValue: ClothingItem | null = null;
+  mostRecent: ClothingItem | null = null;
+  Oldest: ClothingItem | null = null;
 
   // Inject the service and run calculations immediately
   constructor(private wardrobeService: WardrobeService) {
@@ -31,20 +34,21 @@ export class Dashboard {
     const items: ClothingItem[] = this.wardrobeService.getAllItems();
 
     // KPI 1: Total items
-    this.totalItems = items.length;
+    this.totalItems = this.wardrobeService.getTotalItems();
 
-    // KPI 2: Total value (Sum of prices)
-    this.totalValue = items.reduce((sum, item) => sum + item.price, 0);
+    // KPI 2: Total value
+    this.totalValue = this.wardrobeService.getTotalValue();
 
     // KPI 3: Items in laundry
-    this.itemsInLaundry = items.filter(item => item.status === 'In Laundry').length;
+    this.itemsInLaundry = this.wardrobeService.getItemsInLaundry();
 
-    // Highlight: Most valuable item (highest price)
-    if (items.length > 0) {
-      const sortedItems: ClothingItem[] = items.sort((a, b) =>
-        b.price - a.price
-      );
-      this.mostValue = sortedItems[0];
-    }
+    // Highlight: Most valuable item
+    this.mostValue = this.wardrobeService.getMostValuableItem();
+
+    // Highlight: Most recent item
+    this.mostRecent = this.wardrobeService.getMostRecentItem();
+
+    // Highlight: Oldest item
+    this.Oldest = this.wardrobeService.getOldestItem();
   }
 }

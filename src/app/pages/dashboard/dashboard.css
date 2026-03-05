@@ -6,9 +6,14 @@
 }
 
 /* Dashboard Header */
-.dashboard-header {
-  h1 { margin: 0.5rem; font-size: 2rem; color: var(--bg-dark); }
-  p { margin: 0; color: var(--text-muted); }
+.dashboard-header h1 {
+  font-size: 2rem;
+  color: var(--text-main);
+}
+
+.dashboard-header p {
+  margin: 0;
+  color: var(--text-muted);
 }
 
 /* KPI Grid */
@@ -18,115 +23,18 @@
   gap: 1.5rem;
 }
 
-/* KPI Card */
-.kpi-card {
-  background-color: var(--white);
-  border: 1px solid var(--border-color);
-  border-radius: 1rem;
-  padding: 1.5rem;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 
-  /* Icon styles */
-  .material-symbols-outlined {
-    padding: 0.75rem;
-    border-radius: 0.75rem;
-    font-size: 1.8rem;
-    &.icon-apparel { background: rgba(164, 90, 73, 0.1); color: var(--rust); }
-    &.icon-payments { background: rgba(179, 223, 211, 0.4); color: #0f8564; }
-    &.icon-laundry { background: rgba(239, 199, 100, 0.3); color: #b89115; }
-  }
-
-  /* KPI Info */
-  .kpi-info {
-    p {
-		margin: 0;
-		font-size: 0.85rem;
-		color: var(--text-muted);
-		font-style: bold;
-		text-transform: uppercase;
-	}
-    h3 {
-		margin: 0.25rem 0 0 0;
-		font-size: 1.5rem;
-		color: var(--text-main); }
-  }
+/* Highlight Section Container */
+.highlight-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 1rem;
 }
 
-/* Highlight Section */
 .highlight-section h2 {
+  margin-left: 1rem;
   font-size: 1.25rem;
   margin-bottom: 1rem;
-  color: var(--bg-dark);
-}
-
-/* Highlight Card */
-.highlight-card {
-  display: flex;
-  background: var(--white);
-  border-radius: 1rem;
-  /* Ensure content doesn't overflow the card */
-  overflow: hidden;
-  border: 1px solid var(--border-color);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-
-  /* Image */
-  .highlight-image {
-    width: 200px;
-    min-height: 200px;
-    background-size: cover;
-    background-position: center;
-    background-color: var(--border-color);
-  }
-
-  /* Details */
-  .highlight-details {
-    padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-
-	/* Badge */
-    .badge {
-      background: var(--green);
-      color: #0f8564;
-      padding: 0.25rem 0.75rem;
-      border-radius: 1rem;
-      font-size: 0.75rem;
-      font-weight: 700;
-    }
-
-	/* Content */
-    h3 {
-		margin: 0;
-		font-size: 1.25rem;
-		color: var(--text-main);
-	}
-    p {
-		margin: 0;
-		color: var(--text-muted);
-		font-size: 0.9rem;
-	}
-
-	/* Button */
-    .btn-primary {
-      margin-top: 1rem;
-      background: var(--rust);
-      color: var(--white);
-      border: none;
-      padding: 0.6rem 1.2rem;
-      border-radius: 0.5rem;
-      cursor: pointer;
-      font-family: inherit;
-      transition: background 0.2s;
-
-      &:hover {
-		background: var(--peach);
-	  }
-    }
-  }
+  color: var(--text-main);
 }
