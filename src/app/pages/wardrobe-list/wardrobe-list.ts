@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { WardrobeService } from '../../services/wardrobe';
 import { ClothingItem } from '../../models/clothing-item';
@@ -10,7 +11,7 @@ import { FilterUtils } from '../../utils/filter.utils';
 @Component({
   selector: 'app-wardrobe-list',
   standalone: true,
-  imports: [CommonModule, FormsModule, ItemCard ],
+  imports: [CommonModule, FormsModule, ItemCard, RouterLink],
   templateUrl: './wardrobe-list.html',
   styleUrl: './wardrobe-list.css'
 })
