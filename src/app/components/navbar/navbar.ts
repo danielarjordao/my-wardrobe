@@ -11,7 +11,4 @@ import { RouterLink, RouterLinkActive } from '@angular/router'; // Required for 
 })
 
 export class Navbar {
-  // No additional logic needed for a simple navbar,
-  // but if I wanted to add dynamic behavior (like active link highlighting),
-  // I could do that here.
 }
