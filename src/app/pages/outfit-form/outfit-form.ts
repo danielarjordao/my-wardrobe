@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { WardrobeService } from '../../services/wardrobe';
 import { ClothingItem } from '../../models/clothing-item';
 import { Outfit } from '../../models/outfit';
@@ -11,7 +12,7 @@ import { FilterUtils } from '../../utils/filter.utils';
 @Component({
   selector: 'app-outfits-form',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './outfit-form.html',
   styleUrl: './outfit-form.css'
 })

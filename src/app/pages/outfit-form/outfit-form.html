@@ -1,5 +1,9 @@
 <div class="outfits-container">
   <header class="page-header">
+	<a routerLink="/outfits" class="back-link">
+	  <span class="material-symbols-outlined">arrow_back</span>
+	  Back to My Outfits
+	</a>
     <h1>Create New Outfit</h1>
     <p>Mix and match your items to create favorite outfits.</p>
   </header>
@@ -7,7 +11,7 @@
   <section class="create-section">
     <div class="creation-form">
       <input type="text" [(ngModel)]="newOutfitName" placeholder="Name your outfit (e.g. Summer Casual)..." class="outfit-input">
-      <button class="btn-primary" (click)="saveOutfit()" [disabled]="!newOutfitName || selectedItemIds.length === 0">
+      <button class="btn-primary" (click)="saveOutfit()" [disabled]="!newOutfitName || selectedItemIds.length === 0" routerLink="/outfits">
         <span class="material-symbols-outlined">add_circle</span> Save Look
       </button>
     </div>
