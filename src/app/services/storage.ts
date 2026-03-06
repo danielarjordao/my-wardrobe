@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-import { ClothingItem } from '../models/clothing-item';
-import { Outfit } from '../models/outfit';
 
 @Injectable({
   providedIn: 'root',
@@ -37,7 +35,7 @@ export class StorageService {
   // Create: Add a new item to a specific storage key
   addItem<T>(item: T, storageKey: string): void {
     const items = this.getAllItems<T>(storageKey);
-    items.push(item);
+    items.unshift(item); // Add new item to the beginning of the array
     this.saveToStorage<T>(items, storageKey);
   }
 
