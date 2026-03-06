@@ -12,16 +12,16 @@
 
       <div class="input-group">
         <input type="text" formControlName="name" placeholder="Outfit Name..." class="outfit-input"
-               [class.input-error]="itemForm.get('name')?.invalid && itemForm.get('name')?.touched">
-        @if (itemForm.get('name')?.invalid && itemForm.get('name')?.touched) {
+               [class.input-error]="isFieldInvalid('name')">
+        @if (isFieldInvalid('name')) {
           <p class="error-text">Name is required (min 3 chars).</p>
         }
       </div>
 
       <div class="input-group">
         <input type="text" formControlName="trip" placeholder="Occasion/Trip..." class="outfit-input"
-               [class.input-error]="itemForm.get('trip')?.invalid && itemForm.get('trip')?.touched">
-        @if (itemForm.get('trip')?.invalid && itemForm.get('trip')?.touched) {
+               [class.input-error]="isFieldInvalid('trip')">
+        @if (isFieldInvalid('trip')) {
           <p class="error-text">Occasion/Trip is required (min 3 chars).</p>
         }
       </div>
@@ -69,7 +69,7 @@
         </div>
       }
     </div>
-    @if (itemForm.get('itemIds')?.invalid && itemForm.get('itemIds')?.touched) {
+    @if (isFieldInvalid('selectedItems')) {
       <p class="error-text">Please select at least one item for the outfit.</p>
     }
   </section>

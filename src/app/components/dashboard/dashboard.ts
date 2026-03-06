@@ -31,8 +31,6 @@ export class Dashboard {
 
   // Method to calculate all KPIs and set the latest item
   calculateKPIs(): void {
-    const items: ClothingItem[] = this.wardrobeService.getAllItems();
-
     // KPI 1: Total items
     this.totalItems = this.wardrobeService.getTotalItems();
 

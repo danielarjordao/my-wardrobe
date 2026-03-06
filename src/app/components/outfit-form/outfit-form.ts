@@ -101,4 +101,9 @@ export class OutfitForm {
     const selectedItems = control.value as string[];
     return selectedItems && selectedItems.length > 0 ? null : { minSelectedItems: true };
   }
+
+  isFieldInvalid(fieldName: string): boolean {
+    const field = this.itemForm.get(fieldName);
+    return field ? field.invalid && field.touched : false;
+  }
 }

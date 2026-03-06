@@ -55,7 +55,6 @@ export class ItemForm {
     this.colors = availableColors;
   }
 
-
   // --- Initialization Methods ---
   checkIfEditMode(): void {
     // Read the ID from the URL (e.g., /clothes/edit/123)

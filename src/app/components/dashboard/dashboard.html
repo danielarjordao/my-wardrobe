@@ -3,7 +3,6 @@
     <h1>Dashboard</h1>
     <p>Real-time overview of your wardrobe.</p>
   </header>
-
 <section class="kpi-grid">
     <app-kpi-card
       icon="apparel"
@@ -11,14 +10,12 @@
       title="Total Items"
       [value]="totalItems">
     </app-kpi-card>
-
     <app-kpi-card
       icon="payments"
       iconClass="payments"
       title="Estimated Value"
       [value]="totalValue | currency:'EUR'">
     </app-kpi-card>
-
     <app-kpi-card
       icon="laundry"
       iconClass="laundry"
@@ -26,7 +23,6 @@
       [value]="itemsInLaundry">
     </app-kpi-card>
   </section>
-
   <section class="highlight-section">
     @if (mostValue) {
       <div>
@@ -34,14 +30,12 @@
         <app-item-card [item]="mostValue"></app-item-card>
       </div>
     }
-
     @if (mostRecent) {
       <div>
         <h2>Most Recent Item</h2>
         <app-item-card [item]="mostRecent"></app-item-card>
       </div>
     }
-
     @if (Oldest) {
       <div>
         <h2>Oldest Item</h2>
