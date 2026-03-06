@@ -7,6 +7,10 @@
 
 O **My Wardrobe** é uma Single Page Application (SPA) desenvolvida em Angular que ajuda a resolver o problema diário de organizar o roupeiro. A aplicação permite gerir peças de roupa, acompanhar o seu estado (ex: disponível, na lavandaria) e planear combinações de looks (Outfits) para ocasiões ou viagens específicas.
 
+## Link do Projeto
+
+O projeto está disponível no GitHub: [My Wardrobe Repository](https://danielarjordao.github.io/my-wardrobe/)
+
 ## Funcionalidades Principais
 
 * **Dashboard Interativo:** Apresenta KPIs em tempo real (Total de peças, Valor estimado do roupeiro, Peças na lavandaria) e destaca os itens mais valiosos e recentes.
