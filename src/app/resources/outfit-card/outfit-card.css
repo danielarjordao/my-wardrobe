@@ -21,13 +21,23 @@
     align-items: center;
 }
 
+.outfit-actions {
+    display: flex;
+}
+
 .outfit-header h3 {
     margin: 0;
     font-size: 1.1rem;
     color: var(--text-main);
 }
 
-.btn-icon {
+.outfit-header h4 {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.btn-icon{
     background: transparent;
     border: none;
     color: var(--red);
@@ -40,7 +50,7 @@
 }
 
 .btn-icon:hover {
-    background: #fce8e6;
+    background: rgba(255, 0, 0, 0.1);
 }
 
 .outfit-items-row {

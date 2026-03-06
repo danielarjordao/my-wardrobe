@@ -1,9 +1,15 @@
 <div class="outfit-card">
     <div class="outfit-header">
-        <h3>{{ outfit.name }} • {{ outfit.trip }}</h3>
-        <button class="btn-icon" (click)="onDelete($event)" title="Delete Look">
-          <span class="material-symbols-outlined">delete</span>
-        </button>
+        <h3>{{ outfit.name }}</h3>
+        <h4>#{{ outfit.trip }}</h4>
+        <div class="outfit-actions">
+            <button class="btn-icon" [routerLink]="['/outfits/edit', outfit.id]" title="Edit Look">
+                <span class="material-symbols-outlined">edit</span>
+            </button>
+            <button class="btn-icon" (click)="onDelete($event)" title="Delete Look">
+                <span class="material-symbols-outlined">delete</span>
+            </button>
+        </div>
     </div>
     <div class="outfit-items-row">
     @for (item of outfitItems; track item.id) {

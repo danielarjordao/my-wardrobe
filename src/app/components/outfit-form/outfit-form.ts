@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors, FormsModule } from '@angular/forms';
-import { RouterLink, Router } from '@angular/router';
+import { Router, ActivatedRoute, RouterLink } from '@angular/router';
 import { WardrobeService } from '../../services/wardrobe';
 import { ClothingItem } from '../../models/clothing-item';
 import { Outfit } from '../../models/outfit';
@@ -12,7 +12,7 @@ import { FilterUtils } from '../../utils/filter.utils';
 @Component({
   selector: 'app-outfits-form',
   standalone: true,
-  imports: [CommonModule, RouterLink, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, RouterLink],
   templateUrl: './outfit-form.html',
   styleUrl: './outfit-form.css'
 })
@@ -23,6 +23,9 @@ export class OutfitForm {
     trip: new FormControl('', [Validators.required, Validators.minLength(3)]),
     itemIds: new FormControl<string[]>([], [Validators.required, this.minSelectedItemsValidator])
   });
+
+  isEditMode: boolean = false;
+  currentOutfitId: string | null = null;
 
   wardrobeItems: ClothingItem[] = [];
   savedOutfits: Outfit[] = [];
@@ -39,12 +42,14 @@ export class OutfitForm {
   constructor(
     private wardrobeService: WardrobeService,
     private outfitService: OutfitService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute,
   ) {
     this.categories = availableCategories;
     this.statuses = availableStatuses;
     this.colors = availableColors;
     this.loadData();
+    this.checkIfEditMode();
   }
 
   loadData(): void {
@@ -59,6 +64,26 @@ export class OutfitForm {
       status: this.selectedStatus,
       color: this.selectedColor
     });
+  }
+
+  checkIfEditMode(): void {
+    // Read the ID from the URL (e.g., /outfits/edit/123)
+    this.currentOutfitId = this.route.snapshot.paramMap.get('id');
+
+    if (this.currentOutfitId) {
+      this.isEditMode = true;
+      const outfitToEdit = this.outfitService.getAllOutfits().find(outfit => outfit.id === this.currentOutfitId);
+      if (outfitToEdit) {
+        this.itemForm.patchValue({
+          name: outfitToEdit.name,
+          trip: outfitToEdit.trip,
+          itemIds: outfitToEdit.itemIds
+        });
+      } else {
+        // If ID is invalid, send back to list
+        this.router.navigate(['/outfits']);
+      }
+    }
   }
 
   // --- Selection Logic ---
@@ -85,12 +110,20 @@ export class OutfitForm {
     if (this.itemForm.valid) {
       const formValue = this.itemForm.value;
 
-      this.outfitService.addOutfit({
-        name: formValue.name,
-        trip: formValue.trip,
-        itemIds: formValue.itemIds
-      });
-
+      if (this.isEditMode && this.currentOutfitId) {
+        this.outfitService.updateOutfit(this.currentOutfitId, {
+          id: this.currentOutfitId,
+          name: formValue.name,
+          trip: formValue.trip,
+          itemIds: formValue.itemIds
+        });
+      } else {
+          this.outfitService.addOutfit({
+          name: formValue.name,
+          trip: formValue.trip,
+          itemIds: formValue.itemIds
+          });
+      }
       this.router.navigate(['/outfits']);
     } else {
       this.itemForm.markAllAsTouched();

@@ -5,19 +5,16 @@
   </header>
 <section class="kpi-grid">
     <app-kpi-card
-      icon="apparel"
       iconClass="apparel"
       title="Total Items"
       [value]="totalItems">
     </app-kpi-card>
     <app-kpi-card
-      icon="payments"
       iconClass="payments"
       title="Estimated Value"
       [value]="totalValue | currency:'EUR'">
     </app-kpi-card>
     <app-kpi-card
-      icon="laundry"
       iconClass="laundry"
       title="In Laundry"
       [value]="itemsInLaundry">

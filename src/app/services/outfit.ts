@@ -29,6 +29,11 @@ export class OutfitService {
     this.storage.addItem<Outfit>(newOutfit, this.outfitsStorageKey);
   }
 
+  // Update: Edit an existing outfit
+  updateOutfit(id: string, updatedOutfit: Outfit): void {
+      this.storage.updateItem<Outfit>(updatedOutfit, this.outfitsStorageKey);
+  }
+
   // Delete: Remove an outfit
   deleteOutfit(id: string): void {
     this.storage.deleteItem<Outfit>(id, this.outfitsStorageKey);
