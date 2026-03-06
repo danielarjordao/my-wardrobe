@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { WardrobeService } from '../../services/wardrobe';
 import { ClothingItem } from '../../models/clothing-item';
-import { ItemCard } from '../../components/item-card/item-card';
-import { KpiCard } from '../../components/kpi-card/kpi-card';
+import { ItemCard } from '../../resources/item-card/item-card';
+import { KpiCard } from '../../resources/kpi-card/kpi-card';
 
 @Component({
   selector: 'app-dashboard',

@@ -15,12 +15,12 @@ export class OutfitCard {
   @Input({ required: true }) allItems: ClothingItem[] = [];
   @Output() deleteClick = new EventEmitter<string>();
 
-  // Filtra as peças de roupa para este cartão específico
+  // Filter the clothing items to get only those that are part of the outfit
   get outfitItems(): ClothingItem[] {
     return this.allItems.filter(item => this.outfit.itemIds.includes(item.id));
   }
 
-  // Emite o evento para o Pai apagar o look
+  // Emit the delete event when the delete button is clicked
   onDelete(event: Event): void {
     event.stopPropagation();
     this.deleteClick.emit(this.outfit.id);

@@ -27,17 +27,17 @@
             <option value="{{ status }}">{{ status }}</option>
           }
       </select>
-      <select [(ngModel)]="selectedSort" (ngModelChange)="applyFilters()" class="filter-select">
-        <option value="">Default Sort</option>
-        @for ( option of sortOptions; track option ) {
-          <option value="{{ option }}">{{ option }}</option>
-        }
-      </select>
       <select [(ngModel)]="selectedColor" (ngModelChange)="applyFilters()" class="filter-select">
         <option value="">All Colors</option>
           @for ( color of colors; track color ) {
             <option value="{{ color }}">{{ color }}</option>
           }
+      </select>
+      <select [(ngModel)]="selectedSort" (ngModelChange)="applyFilters()" class="filter-select">
+        <option value="">Default Sort</option>
+        @for ( option of sortOptions; track option ) {
+          <option value="{{ option }}">{{ option }}</option>
+        }
       </select>
     </div>
   </section>

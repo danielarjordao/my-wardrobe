@@ -50,6 +50,46 @@ section h2 {
 	flex-wrap: wrap;
 }
 
+/* container that holds both the input and the button, to keep them aligned */
+.outfit-form {
+    display: flex;
+	/* Keep the error message and the inputs aligned to the top */
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+/* Make the input group take up remaining space, so the button stays the same size and the input grows as needed */
+.input-group {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 200px;
+    gap: 0.25rem;
+}
+
+/* Error state for inputs */
+.outfit-input.input-error {
+    border-color: var(--red);
+    background-color: rgba(242, 139, 130, 0.1);
+}
+
+/* Error text styling */
+.error-text {
+    color: var(--red);
+    font-size: 0.8rem;
+    margin: 0;
+    font-weight: 500;
+}
+
+/* Button group styling to keep the button aligned with the input */
+.submit-group {
+    display: flex;
+    align-items: center;
+    height: 42px;
+}
+
 .outfit-input {
 	display: flex;
 	align-items: center;

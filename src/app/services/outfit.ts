@@ -19,11 +19,12 @@ export class OutfitService {
   }
 
   // Create: Add a new outfit
-  addOutfit(name: string, itemIds: string[]): void {
+  addOutfit(outfitData: { name: string; trip: string; itemIds: string[] }): void {
     const newOutfit: Outfit = {
       id: Date.now().toString(),
-      name: name,
-      itemIds: itemIds,
+      name: outfitData.name,
+      trip: outfitData.trip,
+      itemIds: outfitData.itemIds
   };
     this.storage.addItem<Outfit>(newOutfit, this.outfitsStorageKey);
   }

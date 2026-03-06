@@ -9,6 +9,12 @@
     </div>
     <p>Mix and match your items to create favorite outfits.</p>
   </header>
+  <div class="filters-bar">
+    <div class="search-box">
+      <span class="material-symbols-outlined">search</span>
+      <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="applyFilters()" placeholder="Search by name or brand...">
+    </div>
+  </div>
   <section class="saved-section">
     @if (savedOutfits.length === 0) {
       <div class="empty-state">
@@ -17,7 +23,7 @@
       </div>
     }
     <div class="outfits-list">
-      @for (outfit of savedOutfits; track outfit.id) {
+      @for (outfit of filteredOutfits; track outfit.id) {
         <app-outfit-card
           [outfit]="outfit"
           [allItems]="wardrobeItems"

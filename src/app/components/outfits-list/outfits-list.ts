@@ -6,7 +6,7 @@ import { WardrobeService } from '../../services/wardrobe';
 import { ClothingItem } from '../../models/clothing-item';
 import { Outfit } from '../../models/outfit';
 import { OutfitService } from '../../services/outfit';
-import { OutfitCard } from '../../components/outfit-card/outfit-card';
+import { OutfitCard } from '../../resources/outfit-card/outfit-card';
 
 @Component({
   selector: 'app-outfits-list',
@@ -18,6 +18,8 @@ import { OutfitCard } from '../../components/outfit-card/outfit-card';
 export class Outfits {
   wardrobeItems: ClothingItem[] = [];
   savedOutfits: Outfit[] = [];
+  searchTerm: string = '';
+  filteredOutfits: Outfit[] = [];
 
   constructor(
     private wardrobeService: WardrobeService,
@@ -29,6 +31,14 @@ export class Outfits {
   loadData(): void {
     this.wardrobeItems = this.wardrobeService.getAllItems();
     this.savedOutfits = this.outfitService.getAllOutfits();
+    this.applyFilters();
+  }
+
+  applyFilters(): void {
+    this.filteredOutfits = this.savedOutfits.filter(outfit => {
+      const matchesSearch = outfit.name.toLowerCase().includes(this.searchTerm.toLowerCase()) || outfit.trip.toLowerCase().includes(this.searchTerm.toLowerCase());
+      return matchesSearch;
+    });
   }
 
   deleteOutfit(id: string): void {

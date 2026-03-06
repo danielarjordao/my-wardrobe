@@ -4,7 +4,7 @@ import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { WardrobeService } from '../../services/wardrobe';
 import { ClothingItem } from '../../models/clothing-item';
-import { ItemCard } from '../../components/item-card/item-card';
+import { ItemCard } from '../../resources/item-card/item-card';
 import { availableCategories, availableStatuses, availableColors, availableSortOptions } from '../../models/item-options';
 import { FilterUtils } from '../../utils/filter.utils';
 

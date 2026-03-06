@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
-import { Dashboard } from './pages/dashboard/dashboard';
-import { WardrobeList } from './pages/wardrobe-list/wardrobe-list';
-import { ItemForm } from './pages/item-form/item-form';
-import { Outfits } from './pages/outfits-list/outfits-list';
-import { OutfitForm } from './pages/outfit-form/outfit-form';
+import { Dashboard } from './components/dashboard/dashboard';
+import { WardrobeList } from './components/wardrobe-list/wardrobe-list';
+import { ItemForm } from './components/item-form/item-form';
+import { Outfits } from './components/outfits-list/outfits-list';
+import { OutfitForm } from './components/outfit-form/outfit-form';
 
 export const routes: Routes = [
   // Redirect empty path to dashboard
