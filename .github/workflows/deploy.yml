@@ -22,11 +22,9 @@ jobs:
         run: npm install
 
       - name: Build the Angular App
-        # ATENÇÃO: Coloca o nome do teu repositório aqui
         run: npm run build -- --base-href=/my-wardrobe/
 
       - name: Fix index.html and 404 routing for GitHub Pages
-        # Este é o truque mágico! Entra na pasta e cria os ficheiros que o GitHub exige
         run: |
           cd ./dist/my-wardrobe/browser
           cp index.csr.html index.html
