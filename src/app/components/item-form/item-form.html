@@ -84,8 +84,17 @@
         <label>Image URL *</label>
         <input type="url" formControlName="imageUrl" placeholder="https://..."
                [class.input-error]="isFieldInvalid('imageUrl')">
+        @if (itemForm.get('imageUrl')?.pending) {
+          <span class="error-msg">Checking image...</span>
+        }
         @if (isFieldInvalid('imageUrl')) {
-          <span class="error-msg">Must be a valid URL starting with http:// or https://</span>
+          @if (itemForm.get('imageUrl')?.hasError('required')) {
+            <span class="error-msg">Image URL is required.</span>
+          } @else if (itemForm.get('imageUrl')?.hasError('invalidUrl')) {
+            <span class="error-msg">Must be a valid URL starting with http:// or https://</span>
+          } @else if (itemForm.get('imageUrl')?.hasError('imageNotFound')) {
+            <span class="error-msg">Image could not be loaded. Please check the URL.</span>
+          }
         }
       </div>
     </div>

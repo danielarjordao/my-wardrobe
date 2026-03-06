@@ -1,17 +1,32 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import { Observable, of } from 'rxjs';
 import { Router, ActivatedRoute, RouterLink } from '@angular/router';
 import { WardrobeService } from '../../services/wardrobe';
 import { ClothingItem } from '../../models/clothing-item';
 import { availableCategories, availableColors, availableStatuses } from '../../models/item-options';
 
-// Custom Validator function for the Image URL
+// Custom Validator function for the Image URL format
 export function urlValidator(control: AbstractControl): ValidationErrors | null {
   if (!control.value)
     return null;
   const isValid = control.value.startsWith('http://') || control.value.startsWith('https://');
   return isValid ? null : { invalidUrl: true };
+}
+
+// Async Validator that tries to load the image and fails if it's inaccessible
+export function imageLoadValidator(control: AbstractControl): Observable<ValidationErrors | null> {
+  if (!control.value) return of(null);
+  const isValidFormat = control.value.startsWith('http://') || control.value.startsWith('https://');
+  if (!isValidFormat) return of(null);
+
+  return new Observable(observer => {
+    const img = new Image();
+    img.onload = () => { observer.next(null); observer.complete(); };
+    img.onerror = () => { observer.next({ imageNotFound: true }); observer.complete(); };
+    img.src = control.value;
+  });
 }
 
 @Component({
@@ -30,7 +45,11 @@ export class ItemForm {
     color: new FormControl('', [Validators.required]),
     brand: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
     price: new FormControl(0, [Validators.required, Validators.min(1)]),
-    imageUrl: new FormControl('', [Validators.required, urlValidator]),
+    imageUrl: new FormControl('', {
+      validators: [Validators.required, urlValidator],
+      asyncValidators: [imageLoadValidator],
+      updateOn: 'blur'
+    }),
     status: new FormControl('Available', [Validators.required]),
     notes: new FormControl('')
   });
