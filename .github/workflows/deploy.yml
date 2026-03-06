@@ -3,7 +3,7 @@ name: Deploy Angular to GitHub Pages
 on:
   push:
     branches:
-      - main
+      - main 
 
 jobs:
   deploy:
@@ -22,7 +22,15 @@ jobs:
         run: npm install
 
       - name: Build the Angular App
+        # ATENÇÃO: Coloca o nome do teu repositório aqui
         run: npm run build -- --base-href=/my-wardrobe/
+
+      - name: Fix index.html and 404 routing for GitHub Pages
+        # Este é o truque mágico! Entra na pasta e cria os ficheiros que o GitHub exige
+        run: |
+          cd ./dist/my-wardrobe/browser
+          cp index.csr.html index.html
+          cp index.html 404.html
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
