@@ -1,59 +1,53 @@
-# MyWardrobe
+# My Wardrobe - Gerenciador de Roupeiro e Looks
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.0.
+**Autora:** Daniela Jordão
+**Curso:** UpSkill - Programação JavaScript (Angular)
 
-## Development server
+## Sobre o Projeto
 
-To start a local development server, run:
+O **My Wardrobe** é uma Single Page Application (SPA) desenvolvida em Angular que ajuda a resolver o problema diário de organizar o roupeiro. A aplicação permite gerir peças de roupa, acompanhar o seu estado (ex: disponível, na lavandaria) e planear combinações de looks (Outfits) para ocasiões ou viagens específicas.
 
-```bash
-ng serve
-```
+## Funcionalidades Principais
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+* **Dashboard Interativo:** Apresenta KPIs em tempo real (Total de peças, Valor estimado do roupeiro, Peças na lavandaria) e destaca os itens mais valiosos e recentes.
+* **Gestão de Roupeiro (CRUD):** Adição, edição, visualização e remoção de peças de roupa com validação de dados através de *Reactive Forms*.
+* **Filtros Dinâmicos:** Pesquisa em tempo real e filtros por categoria, estado e cor, sem necessidade de recarregar a página.
+* **Criador de Looks (Outfits):** Interface intuitiva para agrupar peças de roupa num look específico, associando-o a uma viagem ou evento.
+* **Persistência de Dados:** Os dados são guardados localmente no browser utilizando `LocalStorage` através de um serviço genérico de armazenamento.
 
-## Code scaffolding
+## Tecnologias Utilizadas
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+* **Framework:** Angular (v20+)
+* **Linguagem:** TypeScript (Strict Mode)
+* **Estilização:** CSS3 (CSS Variables, Flexbox, CSS Grid)
+* **Arquitetura:** Componentes (Smart/Dumb), Services (Injeção de Dependências), Reactive Forms, Routing e Pipes.
 
-```bash
-ng generate component component-name
-```
+## Como Executar o Projeto
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+1. Certifique-se de que tem o [Node.js](https://nodejs.org/) e o [Angular CLI](https://angular.io/cli) instalados na sua máquina.
 
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
+2. Clone este repositório:
 
 ```bash
-ng build
+   git clone git@github.com:danielarjordao/my-wardrobe.git
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Navegue até à pasta do projeto:
 
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
+```Bash
+cd my-wardrobe
 ```
 
-## Running end-to-end tests
+Instale as dependências:
 
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
+```Bash
+npm install
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Inicie o servidor de desenvolvimento:
 
-## Additional Resources
+```Bash
+ng serve --open
+```
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+A aplicação será aberta automaticamente no seu browser no endereço <http://localhost:4200/>.
