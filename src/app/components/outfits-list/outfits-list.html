@@ -12,7 +12,7 @@
   <div class="filters-bar">
     <div class="search-box">
       <span class="material-symbols-outlined">search</span>
-      <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="applyFilters()" placeholder="Search by name or brand...">
+      <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="applyFilters()" placeholder="Search by name or occasion...">
     </div>
   </div>
   <section class="saved-section">
@@ -27,9 +27,32 @@
         <app-outfit-card
           [outfit]="outfit"
           [allItems]="wardrobeItems"
-          (deleteClick)="deleteOutfit($event)">
+          (deleteClick)="deleteOutfit($event)"
+          (cardClick)="openModal($event)">
         </app-outfit-card>
       }
     </div>
+@if (selectedOutfitToView) {
+  <div class="modal-overlay" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <header class="modal-header">
+        <div>
+          <h2>{{ selectedOutfitToView.name }}</h2>
+          <p class="modal-subtitle">{{ selectedOutfitToView.trip }}</p>
+        </div>
+        <button class="btn-icon close-btn" (click)="closeModal()">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </header>
+      <div class="modal-body">
+        <div class="modal-grid">
+          @for (item of outfitItemsToShow; track item.id) {
+              <app-item-card [item]="item"></app-item-card>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+  }
   </section>
 </div>
