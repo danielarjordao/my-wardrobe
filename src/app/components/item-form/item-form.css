@@ -116,3 +116,20 @@
 	border-color: var(--border-color);
 	cursor: not-allowed;
 }
+
+@media (max-width: 768px) {
+  .form-actions {
+    /* Change layout to vertical on mobile */
+    display: flex;
+    /* column-reverse makes the "Cancel" button appear below the "Submit" button */
+    flex-direction: column-reverse;
+    gap: 0.75rem;
+    width: 100%;
+  }
+
+  /* Ensure buttons and links take full width on mobile */
+  .submit-group button {
+    width: 100%;
+    justify-content: center;
+  }
+}
