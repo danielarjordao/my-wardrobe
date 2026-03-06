@@ -160,3 +160,9 @@ webkit-scrollbar is not supported in Firefox, but it provides personalization op
 .filter-select:focus {
 	border-color: var(--yellow);
 }
+
+@media (max-width: 600px) {
+	.body {
+		font-size: 0.4rem;
+	}
+}
