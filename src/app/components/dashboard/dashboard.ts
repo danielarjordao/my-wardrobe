@@ -22,7 +22,7 @@ export class Dashboard {
   // Highlight variable
   mostValue: ClothingItem | null = null;
   mostRecent: ClothingItem | null = null;
-  Oldest: ClothingItem | null = null;
+  oldest: ClothingItem | null = null;
 
   // Inject the service and run calculations immediately
   constructor(private wardrobeService: WardrobeService) {
@@ -47,6 +47,6 @@ export class Dashboard {
     this.mostRecent = this.wardrobeService.getMostRecentItem();
 
     // Highlight: Oldest item
-    this.Oldest = this.wardrobeService.getOldestItem();
+    this.oldest = this.wardrobeService.getOldestItem();
   }
 }
