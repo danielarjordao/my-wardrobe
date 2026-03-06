@@ -10,15 +10,7 @@ export class WardrobeService {
   // Key used to store data in the browser's LocalStorage
   private storageKey: string = 'my_wardrobe_data';
 
-  sortedByDate: ClothingItem[] = [];
-  sortedByPrice: ClothingItem[] = [];
-
-
-  // On service initialization, ensure there's at least one item in storage for the dashboard to display
-  constructor(private storage: StorageService) {
-    this.sortedByDate = this.getAllItems().sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-    this.sortedByPrice = this.getAllItems().sort((a, b) => b.price - a.price);
-  }
+  constructor(private storage: StorageService) {}
 
   // --- Core CRUD Operations ---
 
@@ -69,23 +61,20 @@ export class WardrobeService {
 
   // Get the most valuable item
   getMostValuableItem(): ClothingItem | null {
-    if (this.sortedByPrice.length === 0)
-      return null;
-    return this.sortedByPrice[0];
+    const sorted = this.getAllItems().sort((a, b) => b.price - a.price);
+    return sorted[0] ?? null;
   }
 
   // Get the most recently added item
   getMostRecentItem(): ClothingItem | null {
-    if (this.sortedByDate.length === 0)
-      return null;
-    return this.sortedByDate[0];
+    const sorted = this.getAllItems().sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    return sorted[0] ?? null;
   }
 
   // Get the oldest item
   getOldestItem(): ClothingItem | null {
-    if (this.sortedByDate.length === 0)
-       return null;
-    return this.sortedByDate[this.sortedByDate.length - 1];
+    const sorted = this.getAllItems().sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+    return sorted[0] ?? null;
   }
 
 }

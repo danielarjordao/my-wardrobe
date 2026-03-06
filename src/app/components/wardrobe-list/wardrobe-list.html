@@ -48,7 +48,7 @@
         <p>No items found matching your filters.</p>
       </div>
     }
-    @for ( item of filteredAndSortedItems ; track item ) {
+    @for ( item of filteredAndSortedItems ; track item.id ) {
       <app-item-card [item]="item"></app-item-card>
     }
   </section>

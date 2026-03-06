@@ -58,3 +58,73 @@ section h2 {
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 1.5rem;
 }
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* Background semi-transparent to focus on the modal */
+  backdrop-filter: blur(4px); /* Adds a blur effect to the background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensures the modal is above all other content */
+}
+
+.modal-content {
+  background: var(--white);
+  width: 90%;
+  max-width: 600px;
+  max-height: 600px;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  /* overflow: hidden to prevent content from spilling out of the rounded corners */
+  overflow: hidden;
+  animation: slideUp 0.3s ease-out;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: var(--text-main);
+}
+
+.modal-subtitle {
+  margin: 0.25rem 0 0 0;
+  color: var(--text-muted);
+}
+
+.close-btn {
+  color: var(--text-muted);
+}
+
+.modal-body {
+  padding: 1.5rem;
+  /* Overflow auto to allow scrolling if content exceeds modal height */
+  overflow-y: auto;
+}
+
+.modal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 1rem;
+}
+
+/* Animation for modal appearance */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}

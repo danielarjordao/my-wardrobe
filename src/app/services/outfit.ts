@@ -30,7 +30,7 @@ export class OutfitService {
   }
 
   // Update: Edit an existing outfit
-  updateOutfit(id: string, updatedOutfit: Outfit): void {
+  updateOutfit(updatedOutfit: Outfit): void {
       this.storage.updateItem<Outfit>(updatedOutfit, this.outfitsStorageKey);
   }
 

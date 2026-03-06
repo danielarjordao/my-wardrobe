@@ -111,7 +111,7 @@ export class OutfitForm {
       const formValue = this.itemForm.value;
 
       if (this.isEditMode && this.currentOutfitId) {
-        this.outfitService.updateOutfit(this.currentOutfitId, {
+        this.outfitService.updateOutfit({
           id: this.currentOutfitId,
           name: formValue.name,
           trip: formValue.trip,

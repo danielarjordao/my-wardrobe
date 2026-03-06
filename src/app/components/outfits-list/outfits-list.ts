@@ -7,11 +7,12 @@ import { ClothingItem } from '../../models/clothing-item';
 import { Outfit } from '../../models/outfit';
 import { OutfitService } from '../../services/outfit';
 import { OutfitCard } from '../../resources/outfit-card/outfit-card';
+import { ItemCard } from '../../resources/item-card/item-card';
 
 @Component({
   selector: 'app-outfits-list',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, OutfitCard],
+  imports: [CommonModule, FormsModule, RouterModule, OutfitCard, ItemCard],
   templateUrl: './outfits-list.html',
   styleUrl: './outfits-list.css'
 })
@@ -20,6 +21,9 @@ export class Outfits {
   savedOutfits: Outfit[] = [];
   searchTerm: string = '';
   filteredOutfits: Outfit[] = [];
+
+  selectedOutfitToView: Outfit | null = null;
+  outfitItemsToShow: ClothingItem[] = [];
 
   constructor(
     private wardrobeService: WardrobeService,
@@ -46,5 +50,15 @@ export class Outfits {
       this.outfitService.deleteOutfit(id);
       this.loadData();
     }
+  }
+
+  openModal(outfit: Outfit): void {
+    this.selectedOutfitToView = outfit;
+    this.outfitItemsToShow = this.wardrobeItems.filter(item => outfit.itemIds.includes(item.id));
+  }
+
+  closeModal(): void {
+    this.selectedOutfitToView = null;
+    this.outfitItemsToShow = [];
   }
 }
