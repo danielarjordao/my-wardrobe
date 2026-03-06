@@ -63,3 +63,13 @@
   color: var(--peach);
   border-bottom-color: var(--peach);
 }
+
+@media (max-width: 768px) {
+  .navbar-container {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "brand"
+      "actions";
+  }
+
+}
