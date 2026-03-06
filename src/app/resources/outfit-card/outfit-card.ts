@@ -15,17 +15,15 @@ export class OutfitCard {
   @Input({ required: true }) outfit!: Outfit;
   @Input({ required: true }) allItems: ClothingItem[] = [];
   @Output() deleteClick = new EventEmitter<string>();
+  @Output() cardClick = new EventEmitter<Outfit>();
 
   // Filter the clothing items to get only those that are part of the outfit
   get outfitItems(): ClothingItem[] {
     return this.allItems.filter(item => this.outfit.itemIds.includes(item.id));
   }
 
-  // Emit the edit event when the edit button is clicked
-  onEdit(event: Event): void {
-    event.stopPropagation();
-    // You can implement the edit functionality here, e.g., navigate to an edit page or open a modal
-    console.log(`Edit outfit with ID: ${this.outfit.id}`);
+  onCardClick(): void {
+    this.cardClick.emit(this.outfit);
   }
 
   // Emit the delete event when the delete button is clicked
