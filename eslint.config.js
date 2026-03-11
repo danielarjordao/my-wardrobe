@@ -5,8 +5,18 @@ const tseslint = require("typescript-eslint");
 const angular = require("angular-eslint");
 
 module.exports = defineConfig([
+  tseslint.configs.base,
   {
-    files: ["**/*.ts"],
+    files: ['**/*.ts'],
+    processor: angular.processInlineTemplates,
+    rules: {
+      '@typescript-eslint/no-unused-vars': 'error'
+    },
+  }
+]);
+/*
+  {
+    files: ["**//*.ts"],
     extends: [
       eslint.configs.recommended,
       tseslint.configs.recommended,
@@ -34,11 +44,12 @@ module.exports = defineConfig([
     },
   },
   {
-    files: ["**/*.html"],
+    files: ["**//*.html"],
     extends: [
       angular.configs.templateRecommended,
       angular.configs.templateAccessibility,
     ],
     rules: {},
   }
-]);
+);
+*/
