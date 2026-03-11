@@ -17,7 +17,7 @@
   <form [formGroup]="itemForm" (ngSubmit)="onSubmit()" class="clothing-form">
     <div class="form-row">
       <div class="form-group full-width">
-        <label>Item Name *</label>
+        <span>Item Name *</span>
         <input type="text" formControlName="name" placeholder="e.g. Vintage Denim Jacket"
                [class.input-error]="isFieldInvalid('name')">
         @if (isFieldInvalid('name')) {
@@ -27,7 +27,7 @@
     </div>
     <div class="form-row">
       <div class="form-group">
-        <label>Category *</label>
+        <span>Category *</span>
         <select formControlName="category"
                 [class.input-error]="isFieldInvalid('category')">
           <option value="" disabled>Select Category</option>
@@ -40,7 +40,7 @@
         }
       </div>
       <div class="form-group">
-        <label>Color *</label>
+        <span>Color *</span>
         <select formControlName="color"
                 [class.input-error]="isFieldInvalid('color')">
           <option value="" disabled>Select Color</option>
@@ -55,7 +55,7 @@
     </div>
     <div class="form-row">
       <div class="form-group">
-        <label>Brand *</label>
+        <span>Brand *</span>
         <input type="text" formControlName="brand" placeholder="e.g. Zara"
             [class.input-error] = "isFieldInvalid('brand')">
         @if (isFieldInvalid('brand')) {
@@ -63,7 +63,7 @@
         }
       </div>
       <div class="form-group">
-        <label>Price *</label>
+        <span>Price *</span>
         <input type="number" formControlName="price" placeholder="0.00" step="0.01"
                [class.input-error]="isFieldInvalid('price')">
         @if (isFieldInvalid('price')) {
@@ -73,7 +73,7 @@
     </div>
     <div class="form-row">
       <div class="form-group">
-        <label>Status *</label>
+        <span>Status *</span>
         <select formControlName="status">
           @for ( status of statuses; track status ) {
             <option value="{{ status }}">{{ status }}</option>
@@ -81,7 +81,7 @@
         </select>
       </div>
       <div class="form-group">
-        <label>Image URL *</label>
+        <span>Image URL *</span>
         <input type="url" formControlName="imageUrl" placeholder="https://..."
                [class.input-error]="isFieldInvalid('imageUrl')">
         @if (itemForm.get('imageUrl')?.pending) {
@@ -100,7 +100,7 @@
     </div>
     <div class="form-row">
       <div class="form-group full-width">
-        <label>Notes</label>
+        <span>Notes</span>
         <textarea formControlName="notes" rows="3" placeholder="Add details about fit, care instructions..."></textarea>
       </div>
     </div>

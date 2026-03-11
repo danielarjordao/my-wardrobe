@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { WardrobeService } from '../../services/wardrobe';
 import { ClothingItem } from '../../models/clothing-item';
@@ -10,25 +10,30 @@ import { KpiCard } from '../../resources/kpi-card/kpi-card';
   standalone: true,
   imports: [CommonModule, ItemCard, KpiCard],
   templateUrl: './dashboard.html',
-  styleUrl: './dashboard.css'
+  styleUrl: './dashboard.css',
 })
-
 export class Dashboard {
+  private wardrobeService = inject(WardrobeService);
+
   // KPI variables
-  totalItems: number = 0;
-  totalValue: number = 0;
-  itemsInLaundry: number = 0;
+  totalItems = 0;
+  totalValue = 0;
+  itemsInLaundry = 0;
 
   // Highlight variable
   mostValue: ClothingItem | null = null;
   mostRecent: ClothingItem | null = null;
   oldest: ClothingItem | null = null;
 
+  /* Inserted by Angular inject() migration for backwards compatibility */
+  /*
+  constructor(...args: unknown[]);
+
   // Inject the service and run calculations immediately
-  constructor(private wardrobeService: WardrobeService) {
+  constructor() {
     this.calculateKPIs();
   }
-
+  */
   // Method to calculate all KPIs and set the latest item
   calculateKPIs(): void {
     // KPI 1: Total items

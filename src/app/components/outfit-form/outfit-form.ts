@@ -1,12 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors, FormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+  AbstractControl,
+  ValidationErrors,
+  FormsModule,
+} from '@angular/forms';
 import { Router, ActivatedRoute, RouterLink } from '@angular/router';
 import { WardrobeService } from '../../services/wardrobe';
 import { ClothingItem } from '../../models/clothing-item';
 import { Outfit } from '../../models/outfit';
 import { OutfitService } from '../../services/outfit';
-import { availableCategories, availableStatuses, availableColors } from '../../models/item-options';
+//import { availableCategories, availableStatuses, availableColors } from '../../models/item-options';
 import { FilterUtils } from '../../utils/filter.utils';
 
 @Component({
@@ -14,44 +22,47 @@ import { FilterUtils } from '../../utils/filter.utils';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, FormsModule, RouterLink],
   templateUrl: './outfit-form.html',
-  styleUrl: './outfit-form.css'
+  styleUrl: './outfit-form.css',
 })
 export class OutfitForm {
+  private wardrobeService = inject(WardrobeService);
+  private outfitService = inject(OutfitService);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
 
   itemForm: FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
     trip: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    itemIds: new FormControl<string[]>([], [Validators.required, this.minSelectedItemsValidator])
+    itemIds: new FormControl<string[]>([], [Validators.required, this.minSelectedItemsValidator]),
   });
 
-  isEditMode: boolean = false;
+  isEditMode = false;
   currentOutfitId: string | null = null;
 
   wardrobeItems: ClothingItem[] = [];
   savedOutfits: Outfit[] = [];
   filteredItems: ClothingItem[] = [];
 
-  selectedCategory: string = '';
-  selectedStatus: string = '';
-  selectedColor: string = '';
+  selectedCategory = '';
+  selectedStatus = '';
+  selectedColor = '';
 
   categories: string[] = [];
   statuses: string[] = [];
   colors: string[] = [];
 
-  constructor(
-    private wardrobeService: WardrobeService,
-    private outfitService: OutfitService,
-    private router: Router,
-    private route: ActivatedRoute,
-  ) {
+  /** Inserted by Angular inject() migration for backwards compatibility */
+/*
+  constructor(...args: unknown[]);
+
+  constructor() {
     this.categories = availableCategories;
     this.statuses = availableStatuses;
     this.colors = availableColors;
     this.loadData();
     this.checkIfEditMode();
   }
-
+  */
   loadData(): void {
     this.wardrobeItems = this.wardrobeService.getAllItems();
     this.savedOutfits = this.outfitService.getAllOutfits();
@@ -62,7 +73,7 @@ export class OutfitForm {
     this.filteredItems = FilterUtils.apply(this.wardrobeItems, {
       category: this.selectedCategory,
       status: this.selectedStatus,
-      color: this.selectedColor
+      color: this.selectedColor,
     });
   }
 
@@ -72,12 +83,14 @@ export class OutfitForm {
 
     if (this.currentOutfitId) {
       this.isEditMode = true;
-      const outfitToEdit = this.outfitService.getAllOutfits().find(outfit => outfit.id === this.currentOutfitId);
+      const outfitToEdit = this.outfitService
+        .getAllOutfits()
+        .find((outfit) => outfit.id === this.currentOutfitId);
       if (outfitToEdit) {
         this.itemForm.patchValue({
           name: outfitToEdit.name,
           trip: outfitToEdit.trip,
-          itemIds: outfitToEdit.itemIds
+          itemIds: outfitToEdit.itemIds,
         });
       } else {
         // If ID is invalid, send back to list
@@ -115,14 +128,14 @@ export class OutfitForm {
           id: this.currentOutfitId,
           name: formValue.name,
           trip: formValue.trip,
-          itemIds: formValue.itemIds
+          itemIds: formValue.itemIds,
         });
       } else {
-          this.outfitService.addOutfit({
+        this.outfitService.addOutfit({
           name: formValue.name,
           trip: formValue.trip,
-          itemIds: formValue.itemIds
-          });
+          itemIds: formValue.itemIds,
+        });
       }
       this.router.navigate(['/outfits']);
     } else {

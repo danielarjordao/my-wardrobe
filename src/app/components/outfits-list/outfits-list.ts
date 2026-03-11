@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -14,24 +14,28 @@ import { ItemCard } from '../../resources/item-card/item-card';
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule, OutfitCard, ItemCard],
   templateUrl: './outfits-list.html',
-  styleUrl: './outfits-list.css'
+  styleUrl: './outfits-list.css',
 })
 export class Outfits {
+  private wardrobeService = inject(WardrobeService);
+  private outfitService = inject(OutfitService);
+
   wardrobeItems: ClothingItem[] = [];
   savedOutfits: Outfit[] = [];
-  searchTerm: string = '';
+  searchTerm = '';
   filteredOutfits: Outfit[] = [];
 
   selectedOutfitToView: Outfit | null = null;
   outfitItemsToShow: ClothingItem[] = [];
 
-  constructor(
-    private wardrobeService: WardrobeService,
-    private outfitService: OutfitService
-  ) {
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  /*
+  constructor(...args: unknown[]);
+
+  constructor() {
     this.loadData();
   }
-
+  */
   loadData(): void {
     this.wardrobeItems = this.wardrobeService.getAllItems();
     this.savedOutfits = this.outfitService.getAllOutfits();
@@ -39,8 +43,10 @@ export class Outfits {
   }
 
   applyFilters(): void {
-    this.filteredOutfits = this.savedOutfits.filter(outfit => {
-      const matchesSearch = outfit.name.toLowerCase().includes(this.searchTerm.toLowerCase()) || outfit.trip.toLowerCase().includes(this.searchTerm.toLowerCase());
+    this.filteredOutfits = this.savedOutfits.filter((outfit) => {
+      const matchesSearch =
+        outfit.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        outfit.trip.toLowerCase().includes(this.searchTerm.toLowerCase());
       return matchesSearch;
     });
   }
@@ -54,7 +60,7 @@ export class Outfits {
 
   openModal(outfit: Outfit): void {
     this.selectedOutfitToView = outfit;
-    this.outfitItemsToShow = this.wardrobeItems.filter(item => outfit.itemIds.includes(item.id));
+    this.outfitItemsToShow = this.wardrobeItems.filter((item) => outfit.itemIds.includes(item.id));
   }
 
   closeModal(): void {
