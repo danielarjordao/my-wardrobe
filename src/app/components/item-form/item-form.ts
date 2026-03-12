@@ -1,16 +1,22 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+  AbstractControl,
+  ValidationErrors,
+} from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { Router, ActivatedRoute, RouterLink } from '@angular/router';
 import { WardrobeService } from '../../services/wardrobe';
 import { ClothingItem } from '../../models/clothing-item';
-import { availableCategories, availableColors, availableStatuses } from '../../models/item-options';
+// import { availableCategories, availableColors, availableStatuses } from '../../models/item-options';
 
 // Custom Validator function for the Image URL format
 export function urlValidator(control: AbstractControl): ValidationErrors | null {
-  if (!control.value)
-    return null;
+  if (!control.value) return null;
   const isValid = control.value.startsWith('http://') || control.value.startsWith('https://');
   return isValid ? null : { invalidUrl: true };
 }
@@ -21,10 +27,16 @@ export function imageLoadValidator(control: AbstractControl): Observable<Validat
   const isValidFormat = control.value.startsWith('http://') || control.value.startsWith('https://');
   if (!isValidFormat) return of(null);
 
-  return new Observable(observer => {
+  return new Observable((observer) => {
     const img = new Image();
-    img.onload = () => { observer.next(null); observer.complete(); };
-    img.onerror = () => { observer.next({ imageNotFound: true }); observer.complete(); };
+    img.onload = () => {
+      observer.next(null);
+      observer.complete();
+    };
+    img.onerror = () => {
+      observer.next({ imageNotFound: true });
+      observer.complete();
+    };
     img.src = control.value;
   });
 }
@@ -34,45 +46,57 @@ export function imageLoadValidator(control: AbstractControl): Observable<Validat
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './item-form.html',
-  styleUrl: './item-form.css'
+  styleUrl: './item-form.css',
 })
-
 export class ItemForm {
+  private wardrobeService = inject(WardrobeService);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+
   // --- Form Initialization ---
   itemForm = new FormGroup({
-    name: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
+    name: new FormControl('', [
+      Validators.required,
+      Validators.minLength(2),
+      Validators.maxLength(50),
+    ]),
     category: new FormControl('', [Validators.required]),
     color: new FormControl('', [Validators.required]),
-    brand: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
+    brand: new FormControl('', [
+      Validators.required,
+      Validators.minLength(2),
+      Validators.maxLength(50),
+    ]),
     price: new FormControl(0, [Validators.required, Validators.min(1)]),
     imageUrl: new FormControl('', {
       validators: [Validators.required, urlValidator],
       asyncValidators: [imageLoadValidator],
-      updateOn: 'blur'
+      updateOn: 'blur',
     }),
     status: new FormControl('Available', [Validators.required]),
-    notes: new FormControl('')
+    notes: new FormControl(''),
   });
 
-  isEditMode: boolean = false;
+  isEditMode = false;
   currentItemId: string | null = null;
-  isReadOnly: boolean = false;
+  isReadOnly = false;
 
   // Dropdown options from service
   categories: string[] = [];
   statuses: string[] = [];
   colors: string[] = [];
 
-  constructor(
-    private wardrobeService: WardrobeService,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  /*
+  constructor(...args: unknown[]);
+
+  constructor() {
     this.checkIfEditMode();
     this.categories = availableCategories;
     this.statuses = availableStatuses;
     this.colors = availableColors;
   }
+  */
 
   // --- Initialization Methods ---
   checkIfEditMode(): void {
@@ -103,7 +127,7 @@ export class ItemForm {
   // Check if a specific field is invalid and was touched by the user
   isFieldInvalid(fieldName: string): boolean {
     const field = this.itemForm.get(fieldName);
-    return field ? (field.invalid && (field.dirty || field.touched)) : false;
+    return field ? field.invalid && (field.dirty || field.touched) : false;
   }
 
   // --- Action Methods ---

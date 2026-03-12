@@ -67,7 +67,7 @@
     </div>
     <div class="selection-grid">
       @for (item of filteredItems; track item.id) {
-        <div class="selectable-item" (click)="toggleSelection(item.id)" [class.selected]="isSelected(item.id)">
+        <div class="selectable-item" tabindex="0" (click)="toggleSelection(item.id)" (keydown.enter)="toggleSelection(item.id)" [class.selected]="isSelected(item.id)">
           <div class="item-img" [style.backgroundImage]="'url(' + item.imageUrl + ')'"></div>
           <p class="subtitle-img">{{ item.name }}</p>
           @if (isSelected(item.id)) {

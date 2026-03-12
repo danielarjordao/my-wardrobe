@@ -1,16 +1,15 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ClothingItem } from '../models/clothing-item';
 import { StorageService } from './storage';
 
 @Injectable({
   providedIn: 'root',
 })
-
 export class WardrobeService {
-  // Key used to store data in the browser's LocalStorage
-  private storageKey: string = 'my_wardrobe_data';
+  private storage = inject(StorageService);
 
-  constructor(private storage: StorageService) {}
+  // Key used to store data in the browser's LocalStorage
+  private storageKey = 'my_wardrobe_data';
 
   // --- Core CRUD Operations ---
 
@@ -26,7 +25,7 @@ export class WardrobeService {
 
   // Create: Add a new item
   addItem(item: ClothingItem): void {
-    let newItem: ClothingItem = { ...item };
+    const newItem: ClothingItem = { ...item };
     newItem.id = Date.now().toString();
     newItem.createdAt = new Date();
     this.storage.addItem<ClothingItem>(newItem, this.storageKey);
@@ -56,7 +55,7 @@ export class WardrobeService {
 
   // Get count of items in laundry
   getItemsInLaundry(): number {
-    return this.getAllItems().filter(item => item.status === 'In Laundry').length;
+    return this.getAllItems().filter((item) => item.status === 'In Laundry').length;
   }
 
   // Get the most valuable item
@@ -67,14 +66,17 @@ export class WardrobeService {
 
   // Get the most recently added item
   getMostRecentItem(): ClothingItem | null {
-    const sorted = this.getAllItems().sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    const sorted = this.getAllItems().sort(
+      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    );
     return sorted[0] ?? null;
   }
 
   // Get the oldest item
   getOldestItem(): ClothingItem | null {
-    const sorted = this.getAllItems().sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+    const sorted = this.getAllItems().sort(
+      (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+    );
     return sorted[0] ?? null;
   }
-
 }

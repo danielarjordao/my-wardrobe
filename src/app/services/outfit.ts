@@ -1,17 +1,23 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Outfit } from '../models/outfit';
 import { StorageService } from './storage';
 
 @Injectable({
   providedIn: 'root',
 })
-
 export class OutfitService {
+  private storage = inject(StorageService);
+
   private outfitsStorageKey = 'my_outfits_data';
 
-  constructor(private storage: StorageService) {}
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  /*
+  constructor(...args: unknown[]);
 
-   // --- Outfit Crud Operations ---
+  constructor() {}
+  */
+
+  // --- Outfit Crud Operations ---
 
   // Read: Get all outfits
   getAllOutfits(): Outfit[] {
@@ -24,19 +30,18 @@ export class OutfitService {
       id: Date.now().toString(),
       name: outfitData.name,
       trip: outfitData.trip,
-      itemIds: outfitData.itemIds
-  };
+      itemIds: outfitData.itemIds,
+    };
     this.storage.addItem<Outfit>(newOutfit, this.outfitsStorageKey);
   }
 
   // Update: Edit an existing outfit
   updateOutfit(updatedOutfit: Outfit): void {
-      this.storage.updateItem<Outfit>(updatedOutfit, this.outfitsStorageKey);
+    this.storage.updateItem<Outfit>(updatedOutfit, this.outfitsStorageKey);
   }
 
   // Delete: Remove an outfit
   deleteOutfit(id: string): void {
     this.storage.deleteItem<Outfit>(id, this.outfitsStorageKey);
   }
-
 }
