@@ -1,0 +1,43 @@
+# docker-compose.yml
+services:
+  # 1. Serviço do Frontend Angular
+  app:
+    # O build é configurado para usar o Dockerfile na raiz do projeto, que deve estar preparado para construir a aplicação Angular e expor a porta 80.
+    build:
+      # O contexto é a raiz do projeto, onde está o Dockerfile para o Angular. Isso permite que o Docker acesse todos os arquivos necessários para construir a aplicação.
+      context: .
+      # O dockerfile é especificado para garantir que o Docker use o arquivo correto para construir a imagem do Angular, que deve estar configurado para instalar as dependências, construir a aplicação e servir os arquivos estáticos.
+      dockerfile: Dockerfile
+    # O nome do contentor é definido para facilitar a identificação e o gerenciamento dos contentores.
+    container_name: angular-app
+    # O mapeamento de portas é configurado para expor a porta 80 do contentor (onde o Angular serve a aplicação) para uma porta definida pela variável APP_PORT no host. Isso permite que a aplicação seja acessível através do navegador usando a porta especificada.
+    ports:
+      # A variável APP_PORT do .env define a porta no host, que é mapeada para a porta 80 do contentor onde o Angular roda.
+      - "${APP_PORT}:80"
+    # As dependências são configuradas para garantir que o serviço da API seja iniciado antes do frontend, evitando erros de conexão quando o Angular tentar acessar a API.
+    depends_on:
+      # O serviço do frontend depende do serviço da API, garantindo que a API esteja em execução antes de iniciar o Angular.
+      - api
+    # As variáveis de ambiente são configuradas para injetar a URL da API no frontend, permitindo que o Angular se comunique com a API mock sem precisar de configurações adicionais dentro do código.
+    environment:
+      # A variável API_URL do .env é injetada no ambiente do contentor do Angular, permitindo que a aplicação acesse a URL da API mock configurada para se comunicar com o serviço da API.
+      API_URL: ${API_URL}
+
+  # 2. Serviço da API Mock
+  api:
+    # O build é configurado para usar o Dockerfile na pasta api, que deve estar preparado para construir a API mock usando Node.js e expor a porta 3000.
+    build:
+      # O contexto é a pasta api, onde está o Dockerfile para a API mock. Isso permite que o Docker acesse todos os arquivos necessários para construir a API.
+      context: ./mock-api
+      # O dockerfile é especificado para garantir que o Docker use o arquivo correto para construir a imagem da API mock, que deve estar configurado para instalar as dependências e iniciar o servidor da API.
+      dockerfile: Dockerfile
+    # O nome do contentor é definido para facilitar a identificação e o gerenciamento dos contentores.
+    container_name: api-mock
+    # O mapeamento de portas é configurado para expor a porta 3000 do contentor (onde a API mock serve as requisições) para uma porta definida pela variável API_PORT no host. Isso permite que a API seja acessível através do Angular ou de outras ferramentas usando a porta especificada.
+    ports:
+      # A variável API_PORT do .env define a porta no host, que é mapeada para a porta 3000 do contentor onde a API mock roda.
+      - "${API_PORT}:3000"
+    # O volume é configurado para montar a pasta local do mock-api dentro do contentor, permitindo que as alterações feitas no arquivo db.json sejam refletidas imediatamente na API mock sem precisar reconstruir a imagem ou reiniciar o contentor.
+    volumes:
+      # O volume monta a pasta local ./mock-api (que contém o Dockerfile e o db.json) para a pasta /app dentro do contentor, onde o json-server espera encontrar o arquivo de dados para servir a API mock.
+      - ./mock-api:/app
