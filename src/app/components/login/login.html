@@ -1,0 +1,65 @@
+<div class="login-wrapper">
+  <div class="form-container">
+    <div class="form-header">
+      @if (isRegisterMode) {
+        <h1>Register</h1>
+        <p>Create a new account to start organizing your wardrobe.</p>
+      } @else {
+        <h1>Login</h1>
+        <p>Please enter your credentials to access your wardrobe.</p>
+      }
+    </div>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="clothing-form">
+      <div class="form-row">
+        <div class="form-group full-width">
+          <label for="username">Username *</label>
+          <input
+            type="text"
+            id="username"
+            formControlName="username"
+            placeholder="Enter your username"
+            [class.input-error]="isFieldInvalid('username')">
+          @if (isFieldInvalid('username')) {
+            <span class="error-msg">Username is required (min 3 characters).</span>
+          }
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group full-width">
+          <label for="password">Password *</label>
+          <input
+            type="password"
+            id="password"
+            formControlName="password"
+            placeholder="Enter your password"
+            [class.input-error]="isFieldInvalid('password')">
+          @if (isFieldInvalid('password')) {
+            <span class="error-msg">Password is required (min 6 characters).</span>
+          }
+        </div>
+      </div>
+      <div class="form-actions center-actions">
+        <button
+          type="submit"
+          class="btn-primary full-width-btn"
+          [disabled]="loginForm.invalid">
+          <span class="material-symbols-outlined">
+            {{ isRegisterMode ? 'person_add' : 'login' }}
+          </span>
+          {{ isRegisterMode ? 'Register' : 'Sign In' }}
+        </button>
+      </div>
+      @if (isRegisterMode) {
+        <div class="register-prompt">
+          <span>Already have an account? </span>
+          <a (click)="onBackToLoginClick()">Back to Login</a>
+        </div>
+      } @else {
+        <div class="register-prompt">
+          <span>Don't have an account? </span>
+          <a (click)="onRegisterClick()">Register here</a>
+        </div>
+      }
+    </form>
+  </div>
+</div>

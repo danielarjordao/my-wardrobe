@@ -1,6 +1,11 @@
 {
   "users": [
-    { "id": 1, "name": "Libertino" },
-    { "id": 2, "name": "Evaristo" }
+    {
+      "id": "1",
+      "username"
+      username: string;
+      password: string;
+      createdAt: Date;
+    }
   ]
 }

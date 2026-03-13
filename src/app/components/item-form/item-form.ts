@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormControl,
@@ -12,7 +12,7 @@ import { Observable, of } from 'rxjs';
 import { Router, ActivatedRoute, RouterLink } from '@angular/router';
 import { WardrobeService } from '../../services/wardrobe';
 import { ClothingItem } from '../../models/clothing-item';
-// import { availableCategories, availableColors, availableStatuses } from '../../models/item-options';
+import { availableCategories, availableColors, availableStatuses } from '../../models/item-options';
 
 // Custom Validator function for the Image URL format
 export function urlValidator(control: AbstractControl): ValidationErrors | null {
@@ -48,7 +48,7 @@ export function imageLoadValidator(control: AbstractControl): Observable<Validat
   templateUrl: './item-form.html',
   styleUrl: './item-form.css',
 })
-export class ItemForm {
+export class ItemForm implements OnInit {
   private wardrobeService = inject(WardrobeService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
@@ -82,9 +82,9 @@ export class ItemForm {
   isReadOnly = false;
 
   // Dropdown options from service
-  categories: string[] = [];
-  statuses: string[] = [];
-  colors: string[] = [];
+  categories: string[] = availableCategories;
+  statuses: string[] = availableStatuses;
+  colors: string[] = availableColors;
 
   /** Inserted by Angular inject() migration for backwards compatibility */
   /*
@@ -99,6 +99,10 @@ export class ItemForm {
   */
 
   // --- Initialization Methods ---
+  ngOnInit(): void {
+    this.checkIfEditMode();
+  }
+
   checkIfEditMode(): void {
     // Read the ID from the URL (e.g., /clothes/edit/123)
     this.currentItemId = this.route.snapshot.paramMap.get('id');

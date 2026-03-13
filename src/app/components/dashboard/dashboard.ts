@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { WardrobeService } from '../../services/wardrobe';
 import { ClothingItem } from '../../models/clothing-item';
@@ -12,7 +12,7 @@ import { KpiCard } from '../../resources/kpi-card/kpi-card';
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
-export class Dashboard {
+export class Dashboard implements OnInit {
   private wardrobeService = inject(WardrobeService);
 
   // KPI variables
@@ -34,6 +34,11 @@ export class Dashboard {
     this.calculateKPIs();
   }
   */
+
+  ngOnInit(): void {
+    this.calculateKPIs();
+  }
+
   // Method to calculate all KPIs and set the latest item
   calculateKPIs(): void {
     // KPI 1: Total items

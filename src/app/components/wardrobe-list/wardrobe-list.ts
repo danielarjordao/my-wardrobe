@@ -1,17 +1,16 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { WardrobeService } from '../../services/wardrobe';
 import { ClothingItem } from '../../models/clothing-item';
 import { ItemCard } from '../../resources/item-card/item-card';
-/* import {
+import {
   availableCategories,
   availableStatuses,
   availableColors,
   availableSortOptions,
 } from '../../models/item-options';
- */
 import { FilterUtils } from '../../utils/filter.utils';
 
 @Component({
@@ -21,16 +20,16 @@ import { FilterUtils } from '../../utils/filter.utils';
   templateUrl: './wardrobe-list.html',
   styleUrl: './wardrobe-list.css',
 })
-export class WardrobeList {
+export class WardrobeList implements OnInit {
   private wardrobeService = inject(WardrobeService);
 
   items: ClothingItem[] = [];
   filteredAndSortedItems: ClothingItem[] = [];
 
-  categories: string[] = [];
-  statuses: string[] = [];
-  colors: string[] = [];
-  sortOptions: string[] = [];
+  categories: string[] = availableCategories;
+  statuses: string[] = availableStatuses;
+  colors: string[] = availableColors;
+  sortOptions: string[] = availableSortOptions;
 
   searchTerm = '';
   selectedCategory = '';
@@ -51,6 +50,12 @@ export class WardrobeList {
     this.applyFilters();
   }
   */
+
+  ngOnInit(): void {
+    this.items = this.wardrobeService.getAllItems();
+    this.applyFilters();
+  }
+
   applyFilters(): void {
     this.filteredAndSortedItems = FilterUtils.apply(this.items, {
       searchTerm: this.searchTerm,

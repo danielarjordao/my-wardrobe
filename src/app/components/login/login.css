@@ -1,0 +1,123 @@
+.login-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}
+
+.form-container {
+    width: 100%;
+    max-width: 450px;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.form-header {
+    text-align: center;
+}
+
+.form-header h1 {
+    margin: 0 0 0.5rem 0;
+    font-size: 2.2rem;
+    color: var(--text-main);
+}
+
+.form-header p {
+    margin: 0;
+    color: var(--text-muted);
+}
+
+.clothing-form {
+    background: var(--bg-secondary);
+    padding: 2.5rem 2rem;
+    border-radius: 1rem;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 12px rgba(164, 90, 73, 0.08); /* Sombra subtil com a cor rust */
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+
+.form-group.full-width {
+    flex: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    font-size: 0.95rem;
+    padding-left: 0.25rem;
+    color: var(--text-main);
+    font-weight: 600;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    background: var(--bg-light);
+    font-family: inherit;
+    font-size: 1rem;
+    color: var(--text-main);
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.form-group input:focus {
+    border-color: var(--rust);
+}
+
+.form-group input.input-error {
+    border-color: var(--red);
+    /* Usar o soft-red com opacidade para não ficar demasiado escuro */
+    background-color: rgba(242, 139, 130, 0.15);
+}
+
+.error-msg {
+    color: var(--red);
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
+}
+
+.form-actions.center-actions {
+    display: flex;
+    justify-content: center;
+    padding-top: 1.5rem;
+    margin-top: 0.5rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.full-width-btn {
+    width: 100%;
+}
+
+.register-prompt {
+    text-align: center;
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.register-prompt span {
+    color: var(--text-muted);
+}
+
+.register-prompt a {
+    color: var(--rust);
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.register-prompt a:hover {
+    color: var(--peach);
+}

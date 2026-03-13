@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -16,7 +16,7 @@ import { ItemCard } from '../../resources/item-card/item-card';
   templateUrl: './outfits-list.html',
   styleUrl: './outfits-list.css',
 })
-export class Outfits {
+export class Outfits implements OnInit {
   private wardrobeService = inject(WardrobeService);
   private outfitService = inject(OutfitService);
 
@@ -36,6 +36,11 @@ export class Outfits {
     this.loadData();
   }
   */
+
+  ngOnInit(): void {
+    this.loadData();
+  }
+
   loadData(): void {
     this.wardrobeItems = this.wardrobeService.getAllItems();
     this.savedOutfits = this.outfitService.getAllOutfits();
