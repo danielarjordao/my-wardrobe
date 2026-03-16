@@ -1,8 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
-import { Router} from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth';
+import { ModalService } from '../../services/modal';
 import { User } from '../../models/user';
 
 @Component({
@@ -15,8 +16,10 @@ import { User } from '../../models/user';
 export class LoginForm {
   private router = inject(Router);
   private authService = inject(AuthService);
+  private modalService = inject(ModalService);
 
   isRegisterMode = false;
+  errorMsg = '';
 
   // Initialize the login form with validation
   loginForm = new FormGroup({
@@ -38,17 +41,20 @@ export class LoginForm {
 
   onRegisterClick(): void {
     this.isRegisterMode = true;
+    this.errorMsg = '';
     this.loginForm.reset();
   }
 
   onBackToLoginClick(): void {
     this.isRegisterMode = false;
+    this.errorMsg = '';
     this.loginForm.reset();
   }
 
   // A method to handle form submission
   async onSubmit(): Promise<void> {
-    // First, check if the form is valid
+    this.errorMsg = '';
+
     if (this.loginForm.valid) {
       const credentials = this.loginForm.value;
 
@@ -61,34 +67,57 @@ export class LoginForm {
           createdAt: new Date()
         };
 
-        // Call the AuthService to create the user (this will send a POST request to the backend)
-        await this.authService.createUser(newUser);
+        const result = await this.authService.createUser(newUser);
 
-        alert('Account created successfully! You can now log in.');
-        // After successful registration, switch back to login mode
-        this.onBackToLoginClick();
+        if (result.success) {
+          this.modalService.open('Account created successfully! You can now log in.', {
+            title: 'Success',
+            variant: 'success'
+          });
+          this.onBackToLoginClick();
+        } else {
+          this.errorMsg = result.error || 'Registration failed.';
+        }
       } else {
-        // Login mode: Validate the user's credentials
-        // Get the list of users from the backend (this will send a GET request)
-        const users = await this.authService.loadUsers();
-
-        // Check if there's a user that matches the provided username and password
-        const validUser = users.find(((user: any) => user.username === credentials.username && user.password === credentials.password)
+        // Login mode: Validate the user's credentials (case-insensitive)
+        const result = await this.authService.login(
+          credentials.username as string,
+          credentials.password as string
         );
 
-        if (validUser) {
-          alert(`Welcome back, ${validUser.username}!`);
+        if (result.success && result.user) {
+          this.modalService.open(`Welcome back, ${result.user.username}!`, {
+            title: 'Login successful',
+            variant: 'success'
+          });
 
-          // redirect to the dashboard after successful login
+          // Save the logged-in user in localStorage (without password for security reasons)
+          this.authService.setCurrentUser(result.user);
+
           this.router.navigate(['/dashboard']);
         } else {
-          alert('Invalid username or password.');
-          // Clear the password field for security reasons
+          this.errorMsg = result.error || 'Invalid username or password.';
           this.loginForm.get('password')?.reset();
         }
       }
     } else {
       this.loginForm.markAllAsTouched();
     }
+  }
+
+  // Method to allow users to continue as guests without logging in
+  continueAsGuest(): void {
+    const guestUser: User = {
+      id: 'guest_' + Date.now().toString(),
+      username: 'Visitante',
+      password: '',
+      createdAt: new Date()
+    };
+
+    // Store the guest user in localStorage (without password for security reasons)
+    this.authService.setCurrentUser(guestUser);
+
+    // Navigate to the dashboard as a guest
+    this.router.navigate(['/dashboard']);
   }
 }

@@ -102,7 +102,6 @@
 
 .register-prompt {
     text-align: center;
-    margin-top: 0.5rem;
     font-size: 0.95rem;
 }
 
@@ -121,3 +120,4 @@
 .register-prompt a:hover {
     color: var(--peach);
 }
+

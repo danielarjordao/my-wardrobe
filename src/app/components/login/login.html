@@ -38,6 +38,11 @@
           }
         </div>
       </div>
+      @if (errorMsg) {
+        <div style="color: var(--red); text-align: center; font-size: 0.9rem; margin-bottom: 1rem; padding: 0.5rem; background-color: rgba(242, 139, 130, 0.15); border-radius: 0.5rem;">
+          {{ errorMsg }}
+        </div>
+      }
       <div class="form-actions center-actions">
         <button
           type="submit"
@@ -60,6 +65,10 @@
           <a (click)="onRegisterClick()">Register here</a>
         </div>
       }
+      <div class="register-prompt">
+        <span>Or continue without an account: </span>
+        <a (click)="continueAsGuest()">Continue as Guest</a>
+      </div>
     </form>
   </div>
 </div>
