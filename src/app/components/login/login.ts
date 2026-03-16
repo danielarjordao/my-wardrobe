@@ -109,7 +109,7 @@ export class LoginForm {
   continueAsGuest(): void {
     const guestUser: User = {
       id: 'guest_' + Date.now().toString(),
-      username: 'Visitante',
+      username: 'Guest',
       password: '',
       createdAt: new Date()
     };
