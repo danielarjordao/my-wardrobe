@@ -6,6 +6,7 @@ import { WardrobeService } from '../../services/wardrobe';
 import { ClothingItem } from '../../models/clothing-item';
 import { Outfit } from '../../models/outfit';
 import { OutfitService } from '../../services/outfit';
+import { ModalService } from '../../services/modal';
 import { OutfitCard } from '../../resources/outfit-card/outfit-card';
 import { ItemCard } from '../../resources/item-card/item-card';
 
@@ -19,6 +20,7 @@ import { ItemCard } from '../../resources/item-card/item-card';
 export class Outfits implements OnInit {
   private wardrobeService = inject(WardrobeService);
   private outfitService = inject(OutfitService);
+  private modalService = inject(ModalService);
 
   wardrobeItems: ClothingItem[] = [];
   savedOutfits: Outfit[] = [];
@@ -56,8 +58,13 @@ export class Outfits implements OnInit {
     });
   }
 
-  deleteOutfit(id: string): void {
-    if (confirm('Are you sure you want to delete this look?')) {
+  async deleteOutfit(id: string): Promise<void> {
+    const shouldDelete = await this.modalService.confirm(
+      'Are you sure you want to delete this look?',
+      { title: 'Delete look', variant: 'error' }
+    );
+
+    if (shouldDelete) {
       this.outfitService.deleteOutfit(id);
       this.loadData();
     }
