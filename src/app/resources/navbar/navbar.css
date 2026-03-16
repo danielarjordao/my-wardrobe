@@ -47,6 +47,17 @@
   gap: 2rem;
 }
 
+.user-badge {
+  color: var(--text-main);
+  background: var(--soft-pink);
+  border: 1px solid var(--border-color);
+  border-radius: 999px;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.9rem;
+  text-decoration: none;
+  cursor: pointer;
+}
+
 .navbar-links .nav-item {
   text-decoration: none;
   color: var(--text-main);
@@ -70,6 +81,12 @@
     grid-template-areas:
       "brand"
       "actions";
+  }
+
+  .navbar-actions {
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
   }
 
 }

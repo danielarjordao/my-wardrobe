@@ -4,10 +4,11 @@ import { WardrobeList } from './components/wardrobe-list/wardrobe-list';
 import { ItemForm } from './components/item-form/item-form';
 import { Outfits } from './components/outfits-list/outfits-list';
 import { OutfitForm } from './components/outfit-form/outfit-form';
+import { LoginForm } from './components/login/login';
 
 export const routes: Routes = [
-  // Redirect empty path to dashboard
-  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+  // Redirect empty path to login
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
 
   // Main pages
   { path: 'dashboard', component: Dashboard },
@@ -21,4 +22,7 @@ export const routes: Routes = [
   // Form (Create and Edit for outfits - reusing the same component)
   { path: 'outfits/new', component: OutfitForm },
   { path: 'outfits/edit/:id', component: OutfitForm },
+
+  // Login and Register
+  { path: 'login', component: LoginForm},
 ];

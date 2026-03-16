@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormControl,
@@ -11,8 +11,9 @@ import {
 import { Observable, of } from 'rxjs';
 import { Router, ActivatedRoute, RouterLink } from '@angular/router';
 import { WardrobeService } from '../../services/wardrobe';
+import { ModalService } from '../../services/modal';
 import { ClothingItem } from '../../models/clothing-item';
-// import { availableCategories, availableColors, availableStatuses } from '../../models/item-options';
+import { availableCategories, availableColors, availableStatuses } from '../../models/item-options';
 
 // Custom Validator function for the Image URL format
 export function urlValidator(control: AbstractControl): ValidationErrors | null {
@@ -48,9 +49,10 @@ export function imageLoadValidator(control: AbstractControl): Observable<Validat
   templateUrl: './item-form.html',
   styleUrl: './item-form.css',
 })
-export class ItemForm {
+export class ItemForm implements OnInit {
   private wardrobeService = inject(WardrobeService);
   private router = inject(Router);
+  private modalService = inject(ModalService);
   private route = inject(ActivatedRoute);
 
   // --- Form Initialization ---
@@ -82,9 +84,9 @@ export class ItemForm {
   isReadOnly = false;
 
   // Dropdown options from service
-  categories: string[] = [];
-  statuses: string[] = [];
-  colors: string[] = [];
+  categories: string[] = availableCategories;
+  statuses: string[] = availableStatuses;
+  colors: string[] = availableColors;
 
   /** Inserted by Angular inject() migration for backwards compatibility */
   /*
@@ -99,6 +101,10 @@ export class ItemForm {
   */
 
   // --- Initialization Methods ---
+  ngOnInit(): void {
+    this.checkIfEditMode();
+  }
+
   checkIfEditMode(): void {
     // Read the ID from the URL (e.g., /clothes/edit/123)
     this.currentItemId = this.route.snapshot.paramMap.get('id');
@@ -158,13 +164,15 @@ export class ItemForm {
     }
   }
 
-  onDelete(): void {
+  async onDelete(): Promise<void> {
     if (this.currentItemId) {
-      // Confirm deletion with the user
-      const confirmDelete = confirm('Are you sure you want to delete this item?');
+      const confirmDelete = await this.modalService.confirm(
+        'Are you sure you want to delete this item?',
+        { title: 'Delete item', variant: 'error' }
+      );
+
       if (confirmDelete) {
         this.wardrobeService.deleteItem(this.currentItemId);
-        // After deletion, navigate back to the list
         this.router.navigate(['/clothes']);
       }
     }

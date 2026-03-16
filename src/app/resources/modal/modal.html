@@ -1,0 +1,25 @@
+@if (state().isOpen) {
+  <div class="modal-overlay" (click)="close()">
+    <div class="modal-card"
+         role="dialog"
+         aria-modal="true"
+         aria-labelledby="modal-title"
+         aria-describedby="modal-message"
+         (click)="$event.stopPropagation()"
+         [class.modal-card-success]="state().variant === 'success'"
+         [class.modal-card-error]="state().variant === 'error'"
+         [class.modal-card-info]="state().variant === 'info'">
+      <h3 id="modal-title">{{ state().title }}</h3>
+      <p id="modal-message">{{ state().message }}</p>
+
+      <div class="modal-actions">
+        @if (state().type === 'confirm') {
+          <button type="button" class="btn-secondary" (click)="cancel()">Cancel</button>
+          <button type="button" class="btn-primary" (click)="confirm()">Confirm</button>
+        } @else {
+          <button type="button" class="btn-primary" (click)="close()">OK</button>
+        }
+      </div>
+    </div>
+  </div>
+}

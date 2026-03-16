@@ -34,6 +34,9 @@ services:
     # O nome do contentor é definido para facilitar a identificação e o gerenciamento dos contentores.
     container_name: api-mock
     # O mapeamento de portas é configurado para expor a porta 3000 do contentor (onde a API mock serve as requisições) para uma porta definida pela variável API_PORT no host. Isso permite que a API seja acessível através do Angular ou de outras ferramentas usando a porta especificada.
+    environment:
+      JSON_SERVER_WATCH: true
+
     ports:
       # A variável API_PORT do .env define a porta no host, que é mapeada para a porta 3000 do contentor onde a API mock roda.
       - "${API_PORT}:3000"

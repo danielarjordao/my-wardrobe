@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormControl,
@@ -14,7 +14,7 @@ import { WardrobeService } from '../../services/wardrobe';
 import { ClothingItem } from '../../models/clothing-item';
 import { Outfit } from '../../models/outfit';
 import { OutfitService } from '../../services/outfit';
-//import { availableCategories, availableStatuses, availableColors } from '../../models/item-options';
+import { availableCategories, availableStatuses, availableColors } from '../../models/item-options';
 import { FilterUtils } from '../../utils/filter.utils';
 
 @Component({
@@ -24,7 +24,7 @@ import { FilterUtils } from '../../utils/filter.utils';
   templateUrl: './outfit-form.html',
   styleUrl: './outfit-form.css',
 })
-export class OutfitForm {
+export class OutfitForm implements OnInit {
   private wardrobeService = inject(WardrobeService);
   private outfitService = inject(OutfitService);
   private router = inject(Router);
@@ -47,9 +47,9 @@ export class OutfitForm {
   selectedStatus = '';
   selectedColor = '';
 
-  categories: string[] = [];
-  statuses: string[] = [];
-  colors: string[] = [];
+  categories: string[] = availableCategories;
+  statuses: string[] = availableStatuses;
+  colors: string[] = availableColors;
 
   /** Inserted by Angular inject() migration for backwards compatibility */
 /*
@@ -63,6 +63,12 @@ export class OutfitForm {
     this.checkIfEditMode();
   }
   */
+
+  ngOnInit(): void {
+    this.loadData();
+    this.checkIfEditMode();
+  }
+
   loadData(): void {
     this.wardrobeItems = this.wardrobeService.getAllItems();
     this.savedOutfits = this.outfitService.getAllOutfits();

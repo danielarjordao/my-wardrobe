@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -6,6 +6,7 @@ import { WardrobeService } from '../../services/wardrobe';
 import { ClothingItem } from '../../models/clothing-item';
 import { Outfit } from '../../models/outfit';
 import { OutfitService } from '../../services/outfit';
+import { ModalService } from '../../services/modal';
 import { OutfitCard } from '../../resources/outfit-card/outfit-card';
 import { ItemCard } from '../../resources/item-card/item-card';
 
@@ -16,9 +17,10 @@ import { ItemCard } from '../../resources/item-card/item-card';
   templateUrl: './outfits-list.html',
   styleUrl: './outfits-list.css',
 })
-export class Outfits {
+export class Outfits implements OnInit {
   private wardrobeService = inject(WardrobeService);
   private outfitService = inject(OutfitService);
+  private modalService = inject(ModalService);
 
   wardrobeItems: ClothingItem[] = [];
   savedOutfits: Outfit[] = [];
@@ -36,6 +38,11 @@ export class Outfits {
     this.loadData();
   }
   */
+
+  ngOnInit(): void {
+    this.loadData();
+  }
+
   loadData(): void {
     this.wardrobeItems = this.wardrobeService.getAllItems();
     this.savedOutfits = this.outfitService.getAllOutfits();
@@ -51,8 +58,13 @@ export class Outfits {
     });
   }
 
-  deleteOutfit(id: string): void {
-    if (confirm('Are you sure you want to delete this look?')) {
+  async deleteOutfit(id: string): Promise<void> {
+    const shouldDelete = await this.modalService.confirm(
+      'Are you sure you want to delete this look?',
+      { title: 'Delete look', variant: 'error' }
+    );
+
+    if (shouldDelete) {
       this.outfitService.deleteOutfit(id);
       this.loadData();
     }

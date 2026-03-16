@@ -22,9 +22,10 @@ FROM nginx:alpine
 # Copy the built application from the build stage to the nginx html directory
 COPY --from=build /app/dist/my-wardrobe/browser /usr/share/nginx/html
 
-# Rename CSR fallback to index.html so nginx can serve it
-RUN mv /usr/share/nginx/html/index.csr.html /usr/share/nginx/html/index.html
-
+# Rename index.csr.html to index.html if it exists (some Angular builds may produce index.csr.html)
+RUN cd /usr/share/nginx/html && \
+    if [ -f index.csr.html ]; then mv index.csr.html index.html; fi
+	
 # Expose the port that nginx will run on
 EXPOSE 80
 
