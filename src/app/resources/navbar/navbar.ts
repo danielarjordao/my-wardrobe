@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router'; // Required for navigation
+import { AuthService } from '../../services/auth';
 
 @Component({
   selector: 'app-navbar',
@@ -11,4 +12,9 @@ import { RouterLink, RouterLinkActive } from '@angular/router'; // Required for 
 })
 
 export class Navbar {
+  private authService = inject(AuthService);
+
+  get currentUsername(): string {
+    return this.authService.getCurrentUser()?.username || 'Guest';
+  }
 }
