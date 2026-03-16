@@ -7,8 +7,8 @@ import { OutfitForm } from './components/outfit-form/outfit-form';
 import { LoginForm } from './components/login/login';
 
 export const routes: Routes = [
-  // Redirect empty path to dashboard
-  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+  // Redirect empty path to login
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
 
   // Main pages
   { path: 'dashboard', component: Dashboard },
