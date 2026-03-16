@@ -16,4 +16,12 @@ export class Modal {
   close(): void {
     this.modalService.close();
   }
+
+  confirm(): void {
+    this.modalService.confirmAction();
+  }
+
+  cancel(): void {
+    this.modalService.cancelAction();
+  }
 }

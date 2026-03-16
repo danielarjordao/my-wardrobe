@@ -13,7 +13,12 @@
       <p id="modal-message">{{ state().message }}</p>
 
       <div class="modal-actions">
-        <button type="button" class="btn-primary" (click)="close()">OK</button>
+        @if (state().type === 'confirm') {
+          <button type="button" class="btn-secondary" (click)="cancel()">Cancel</button>
+          <button type="button" class="btn-primary" (click)="confirm()">Confirm</button>
+        } @else {
+          <button type="button" class="btn-primary" (click)="close()">OK</button>
+        }
       </div>
     </div>
   </div>
