@@ -2,10 +2,27 @@
   "users": [
     {
       "id": "1",
-      "username"
-      username: string;
-      password: string;
-      createdAt: Date;
+      "username": "daniela",
+      "password": "123456",
+      "createdAt": "2024-06-01T12:00:00Z"
+    },
+    {
+      "id": "1773656681061",
+      "username": "gabriela",
+      "password": "123456",
+      "createdAt": "2026-03-16T10:24:41.061Z"
+    },
+    {
+      "id": "test-docker-login",
+      "username": "docker_user",
+      "password": "123456",
+      "createdAt": "2026-03-16T10:00:00Z"
+    },
+    {
+      "id": "1773658255866",
+      "username": "gabriela",
+      "password": "123456",
+      "createdAt": "2026-03-16T10:50:55.866Z"
     }
   ]
 }
