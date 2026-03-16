@@ -11,6 +11,7 @@ import {
 import { Observable, of } from 'rxjs';
 import { Router, ActivatedRoute, RouterLink } from '@angular/router';
 import { WardrobeService } from '../../services/wardrobe';
+import { ModalService } from '../../services/modal';
 import { ClothingItem } from '../../models/clothing-item';
 import { availableCategories, availableColors, availableStatuses } from '../../models/item-options';
 
@@ -51,6 +52,7 @@ export function imageLoadValidator(control: AbstractControl): Observable<Validat
 export class ItemForm implements OnInit {
   private wardrobeService = inject(WardrobeService);
   private router = inject(Router);
+  private modalService = inject(ModalService);
   private route = inject(ActivatedRoute);
 
   // --- Form Initialization ---
@@ -162,13 +164,15 @@ export class ItemForm implements OnInit {
     }
   }
 
-  onDelete(): void {
+  async onDelete(): Promise<void> {
     if (this.currentItemId) {
-      // Confirm deletion with the user
-      const confirmDelete = confirm('Are you sure you want to delete this item?');
+      const confirmDelete = await this.modalService.confirm(
+        'Are you sure you want to delete this item?',
+        { title: 'Delete item', variant: 'error' }
+      );
+
       if (confirmDelete) {
         this.wardrobeService.deleteItem(this.currentItemId);
-        // After deletion, navigate back to the list
         this.router.navigate(['/clothes']);
       }
     }
