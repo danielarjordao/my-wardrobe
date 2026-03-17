@@ -1,20 +1,26 @@
-import { Component, inject } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router'; // Required for navigation
+import { Component, inject, OnInit } from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../services/auth';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  // Import RouterLink to use routerLink="" in HTML
   imports: [RouterLink, RouterLinkActive],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css'
 })
-
-export class Navbar {
+export class Navbar implements OnInit {
   private authService = inject(AuthService);
 
-  get currentUsername(): string {
-    return this.authService.getCurrentUser()?.username || 'Guest';
+  // Show as a Guest while is checking
+  currentUsername = 'Guest';
+
+  async ngOnInit() {
+    // Subscribe to auth state changes to update the username in the navbar
+    this.authService.authState$.subscribe((name) => {
+      this.currentUsername = name;
+    });
+    // Check the initial auth state when the navbar loads
+    await this.authService.notifyAuthState();
   }
 }
