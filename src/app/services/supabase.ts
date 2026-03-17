@@ -11,9 +11,10 @@ export class SupabaseService {
   readonly client: SupabaseClient;
 
   constructor() {
-    this.client = createClient(
-      environment.supabaseUrl,
-      environment.supabaseKey
-    );
+    this.client = createClient(environment.supabaseUrl, environment.supabaseKey, {
+      auth: {
+        persistSession: false
+      }
+    });
   }
 }
