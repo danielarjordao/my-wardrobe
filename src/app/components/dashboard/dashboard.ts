@@ -25,15 +25,6 @@ export class Dashboard implements OnInit {
   mostRecent: ClothingItem | null = null;
   oldest: ClothingItem | null = null;
 
-  /* Inserted by Angular inject() migration for backwards compatibility */
-  /*
-  constructor(...args: unknown[]);
-
-  // Inject the service and run calculations immediately
-  constructor() {
-    this.calculateKPIs();
-  }
-  */
 
   ngOnInit(): void {
     this.calculateKPIs();
