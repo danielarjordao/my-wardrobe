@@ -1,74 +1,114 @@
 <div class="login-wrapper">
   <div class="form-container">
     <div class="form-header">
-      @if (isRegisterMode) {
-        <h1>Register</h1>
-        <p>Create a new account to start organizing your wardrobe.</p>
-      } @else {
-        <h1>Login</h1>
-        <p>Please enter your credentials to access your wardrobe.</p>
-      }
+      <h1>
+        @if (isLoggedIn) {
+          {{ isEditMode ? 'Edit Profile' : 'My Account' }}
+        } @else {
+          {{ isRegisterMode ? 'Register' : 'Login' }}
+        }
+      </h1>
+      <div class="form-intro">
+        <p>
+          @if (isLoggedIn) {
+            Manage your personal details.
+          } @else {
+            {{ isRegisterMode ? 'Create a new account.' : 'Enter your credentials.' }}
+          }
+        </p>
+      </div>
     </div>
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="clothing-form">
+  <form [formGroup]="accountForm" (ngSubmit)="onSubmit()" class="clothing-form">
+    @if (isRegisterMode || isLoggedIn) {
       <div class="form-row">
         <div class="form-group full-width">
-          <label for="username">Username *</label>
-          <input
-            type="text"
-            id="username"
-            formControlName="username"
-            placeholder="Enter your username"
-            [class.input-error]="isFieldInvalid('username')">
-          @if (isFieldInvalid('username')) {
-            <span class="error-msg">Username is required (min 3 characters).</span>
+          <span>Name *</span>
+          <input type="text" formControlName="name" placeholder="Enter your name"
+                 [class.input-error]="isFieldInvalid('name')">
+          @if (isFieldInvalid('name')) {
+            <span class="error-msg">Name is required (min 2 characters).</span>
           }
         </div>
       </div>
+    }
+    <div class="form-row">
+      <div class="form-group full-width">
+        <span>Email *</span>
+        <input type="email" formControlName="email" placeholder="Enter your email"
+               [class.input-error]="isFieldInvalid('email')">
+        @if (isFieldInvalid('email')) {
+          <span class="error-msg">A valid email is required.</span>
+        }
+      </div>
+    </div>
+    @if (!isLoggedIn || isEditMode) {
       <div class="form-row">
         <div class="form-group full-width">
-          <label for="password">Password *</label>
-          <input
-            type="password"
-            id="password"
-            formControlName="password"
-            placeholder="Enter your password"
-            [class.input-error]="isFieldInvalid('password')">
+          <span>{{ (isLoggedIn && isEditMode) ? 'New Password' : 'Password *' }}</span>
+          <input type="password" formControlName="password" placeholder="Enter your password"
+                 [class.input-error]="isFieldInvalid('password')">
           @if (isFieldInvalid('password')) {
-            <span class="error-msg">Password is required (min 6 characters).</span>
+            <span class="error-msg">Password must be at least 6 characters.</span>
           }
         </div>
       </div>
-      @if (errorMsg) {
-        <div style="color: var(--red); text-align: center; font-size: 0.9rem; margin-bottom: 1rem; padding: 0.5rem; background-color: rgba(242, 139, 130, 0.15); border-radius: 0.5rem;">
-          {{ errorMsg }}
+    }
+    @if (errorMsg) {
+      <div class="form-row">
+        <div class="form-group full-width form-group-center">
+          <span class="error-msg api-error-box">
+            {{ errorMsg }}
+          </span>
         </div>
-      }
-      <div class="form-actions center-actions">
-        <button
-          type="submit"
-          class="btn-primary full-width-btn"
-          [disabled]="loginForm.invalid">
-          <span class="material-symbols-outlined">
+      </div>
+    }
+<div class="form-actions" [class.actions-end]="isLoggedIn" [class.actions-center]="!isLoggedIn">
+      @if (isLoggedIn) {
+        @if (isEditMode) {
+          <div class="edit-actions-row">
+            <button type="button" class="btn-secondary" (click)="cancelEditing()">Cancel</button>
+            <button type="submit" class="btn-primary" [disabled]="accountForm.invalid">
+              <span class="material-symbols-outlined">save</span>
+              Save Changes
+            </button>
+          </div>
+        } @else {
+          <div class="edit-actions-row">
+            <button type="button" class="btn-secondary" (click)="onLogout()">
+              <span class="material-symbols-outlined">logout</span>
+              Logout
+            </button>
+            <button type="button" class="btn-primary" (click)="enableEditing()">
+              <span class="material-symbols-outlined">edit</span>
+              Edit Profile
+            </button>
+          </div>
+        }
+      } @else {
+        <button type="submit" class="btn-primary full-width-btn" [disabled]="accountForm.invalid">
+          <span class="material-symbols-outlined btn-icon-left">
             {{ isRegisterMode ? 'person_add' : 'login' }}
           </span>
           {{ isRegisterMode ? 'Register' : 'Sign In' }}
         </button>
-      </div>
-      @if (isRegisterMode) {
-        <div class="register-prompt">
-          <span>Already have an account? </span>
-          <a (click)="onBackToLoginClick()">Back to Login</a>
-        </div>
-      } @else {
-        <div class="register-prompt">
-          <span>Don't have an account? </span>
-          <a (click)="onRegisterClick()">Register here</a>
-        </div>
       }
-      <div class="register-prompt">
-        <span>Or continue without an account: </span>
-        <a (click)="continueAsGuest()">Continue as Guest</a>
+    </div>
+    @if (!isLoggedIn) {
+      <div class="auth-links">
+        <div class="register-prompt">
+          @if (isRegisterMode) {
+            <span>Already have an account? </span>
+            <a (click)="setLoginMode()">Back to Login</a>
+          } @else {
+            <span>Don't have an account? </span>
+            <a (click)="setRegisterMode()">Register here</a>
+          }
+        </div>
+        <div class="register-prompt">
+          <span>Or continue without an account: </span>
+          <a (click)="continueAsGuest()">Continue as Guest</a>
+        </div>
       </div>
-    </form>
-  </div>
+    }
+  </form>
 </div>

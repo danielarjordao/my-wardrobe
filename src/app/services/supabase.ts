@@ -1,19 +1,20 @@
 import { Injectable } from '@angular/core';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import { environment } from '../../environments/environment';
+import { environment } from '../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SupabaseService {
-  private supabase: SupabaseClient;
+  // This client is readonly to prevent accidental reassignment,
+  // but its internal state can still be modified (e.g., auth sessions)
+  readonly client: SupabaseClient;
 
   constructor() {
-    // Initialize Supabase client using environment variables
-    this.supabase = createClient(
-      environment.supabaseUrl,
-      environment.supabaseKey
-    );
+    this.client = createClient(environment.supabaseUrl, environment.supabaseKey, {
+      auth: {
+        persistSession: false
+      }
+    });
   }
-
 }
