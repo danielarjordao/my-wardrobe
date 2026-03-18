@@ -1,27 +1,51 @@
-name: Deploy Angular to GitHub Pages
+name: Deploy to GitHub Pages
 
 on:
   push:
-    branches:
-      - main 
+    branches: [ "develop-idp" ]
+
+permissions:
+  contents: write
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Checkout do código
+        uses: actions/checkout@v5
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
-      - name: Install dependencies
-        run: npm install
+      - name: Instalar dependências
+        run: npm ci
 
-      - name: Build the Angular App
+      - name: Generate environment files
+        run: |
+          mkdir -p src/environments
+          cat > src/environments/environment.development.ts <<EOF
+          export const environment = {
+            production: false,
+            supabaseUrl: '${SUPABASE_URL}',
+            supabaseKey: '${SUPABASE_KEY}'
+          };
+          EOF
+          cat > src/environments/environment.ts <<EOF
+          export const environment = {
+            production: true,
+            supabaseUrl: '${SUPABASE_URL}',
+            supabaseKey: '${SUPABASE_KEY}'
+          };
+          EOF
+
+      - name: Fazer o Build Angular
         run: npm run build -- --base-href=/my-wardrobe/
 
       - name: Fix index.html and 404 routing for GitHub Pages
@@ -30,7 +54,7 @@ jobs:
           cp index.csr.html index.html
           cp index.html 404.html
 
-      - name: Deploy to GitHub Pages
+      - name: Publicar no GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
