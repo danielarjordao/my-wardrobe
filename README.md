@@ -1,7 +1,7 @@
 # My Wardrobe - Gerenciador de Roupeiro e Looks
 
-[](https://www.google.com/search?q=https://github.com/danielarjordao/my-wardrobe/actions/workflows/ci.yml)
-[](https://www.google.com/search?q=https://github.com/danielarjordao/my-wardrobe/actions/workflows/deploy.yml)
+![CI](https://github.com/danielarjordao/my-wardrobe/actions/workflows/ci.yml/badge.svg)
+![Deploy to GitHub Pages](https://github.com/danielarjordao/my-wardrobe/actions/workflows/deploy.yml/badge.svg)
 
 **Autora:** Daniela Jordão  
 **Curso:** UpSkill - Programação JavaScript (Angular)
