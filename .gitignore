@@ -44,6 +44,4 @@ __screenshots__/
 Thumbs.db
 
 # Environments
-# I commented this out because I want to keep my environment files in the repository to make it easier to test and develop.
-# In a real project, you would want to keep your environment files out of the repository and use a tool like dotenv to manage your environment variables.
-# environments/
+environments/
