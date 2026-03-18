@@ -1,16 +1,21 @@
-name: Deploy Angular to GitHub Pages
+name: CI/CD Pipeline
 
 on:
   push:
-    branches:
-      - main 
+    branches: [ "develop-idp" ]
+  pull_request:
+    branches: [ "develop-idp" ]
+  workflow_dispatch:
 
 jobs:
-  deploy:
+  build-lint-deploy:
     runs-on: ubuntu-latest
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
 
     steps:
-      - name: Checkout repository
+      - name: Checkout do código
         uses: actions/checkout@v4
 
       - name: Setup Node.js
@@ -18,19 +23,50 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install dependencies
-        run: npm install
+      - name: Cache npm
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
 
-      - name: Build the Angular App
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Generate environment files
+        run: |
+          mkdir -p src/environments
+          cat > src/environments/environment.development.ts <<EOF
+          export const environment = {
+            production: false,
+            supabaseUrl: '${SUPABASE_URL}',
+            supabaseKey: '${SUPABASE_KEY}'
+          };
+          EOF
+          cat > src/environments/environment.ts <<EOF
+          export const environment = {
+            production: true,
+            supabaseUrl: '${SUPABASE_URL}',
+            supabaseKey: '${SUPABASE_KEY}'
+          };
+          EOF
+
+      - name: Executar lint
+        run: npm run lint
+
+      - name: Executar build para GitHub Pages
         run: npm run build -- --base-href=/my-wardrobe/
 
-      - name: Fix index.html and 404 routing for GitHub Pages
+      - name: Fix index.html and 404 routing
+        if: github.event_name == 'push'
         run: |
           cd ./dist/my-wardrobe/browser
           cp index.csr.html index.html
           cp index.html 404.html
 
       - name: Deploy to GitHub Pages
+        if: github.event_name == 'push'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
