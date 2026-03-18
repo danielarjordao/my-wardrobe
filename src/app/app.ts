@@ -16,4 +16,4 @@ export class App {
   title = 'My Wardrobe';
 }
 
-const variavelInutil = 'Isto vai falhar o CI';
+const variavelInutil = 'Falhar o CI';
