@@ -1,27 +1,39 @@
+# Workflow de CI para My Wardrobe
 on:
+  # Disparar este workflow em Pull Requests para as branches `develop-idp` e `main`, em pushes para a branch `develop-idp`, ou manualmente.
   pull_request:
     branches: [ "develop-idp", "main" ]
+  # Disparar este workflow em pushes para a branch `develop-idp`.
   push:
     branches: [ "develop-idp" ]
-  workflow_dispatch: 
+  # Permitir disparar este workflow manualmente a partir do GitHub Actions.
+  workflow_dispatch:
 
+# Variáveis de ambiente para o Supabase, usando os segredos do repositório.
 jobs:
+  # Job para lintar o código e construir a aplicação.
   build-and-lint:
+    # Usar a última versão do Ubuntu como ambiente de execução.
     runs-on: ubuntu-latest
 
+    # Definir as variáveis de ambiente para o Supabase, usando os segredos do repositório.
     env:
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
 
+    # Definir os passos a seguir neste job.
     steps:
+        # Primeiro, fazer checkout do código para o ambiente de execução.
       - name: Checkout do código
         uses: actions/checkout@v5
 
+        # Configurar o Node.js para a versão 20.
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
+        # Configurar o cache do npm para acelerar as instalações de dependências.
       - name: Cache npm
         uses: actions/cache@v4
         with:
@@ -30,9 +42,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-npm-
 
+        # Instalar as dependências do projeto usando npm ci, que é mais rápido e garante uma instalação limpa.
       - name: Install Dependencies
         run: npm ci
 
+        # Gerar os arquivos de ambiente para desenvolvimento e produção, usando as variáveis de ambiente definidas anteriormente.
       - name: Generate environment files
         run: |
           mkdir -p src/environments
@@ -50,9 +64,10 @@ jobs:
             supabaseKey: '${SUPABASE_KEY}',
           };
           EOF
-
+        # Rodar o lint para verificar a qualidade do código.
       - name: Run Lint
         run: npm run lint
 
+        # Rodar o build para garantir que a aplicação compila sem erros.
       - name: Build Project
         run: npm run build

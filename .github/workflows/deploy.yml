@@ -1,32 +1,43 @@
 name: Deploy to GitHub Pages
 
+# Este workflow é acionado quando há um push para a branch "develop-idp" ou quando é disparado manualmente a partir do GitHub Actions.
 on:
+  # Disparar este workflow em pushes para a branch `develop-idp`.
   push:
     branches: [ "develop-idp" ]
 
+# Permissões necessárias para este workflow, permitindo que ele escreva no repositório (necessário para publicar no GitHub Pages).
 permissions:
   contents: write
 
+# Variáveis de ambiente para o Supabase, usando os segredos do repositório.
 jobs:
+  # Job para construir a aplicação e publicá-la no GitHub Pages.
   build-and-deploy:
     runs-on: ubuntu-latest
 
+    # Definir as variáveis de ambiente para o Supabase, usando os segredos do repositório.
     env:
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
 
+    # Definir os passos a seguir neste job.
     steps:
+      # Primeiro, fazer checkout do código para o ambiente de execução.
       - name: Checkout do código
         uses: actions/checkout@v5
 
+      # Configurar o Node.js para a versão 20.
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
+      # Configurar o cache do npm para acelerar as instalações de dependências.
       - name: Instalar dependências
         run: npm ci
 
+        # Gerar os arquivos de ambiente para desenvolvimento e produção, usando as variáveis de ambiente definidas anteriormente.
       - name: Generate environment files
         run: |
           mkdir -p src/environments
@@ -45,15 +56,18 @@ jobs:
           };
           EOF
 
+        # Rodar o build para garantir que a aplicação compila sem erros.
       - name: Fazer o Build Angular
         run: npm run build -- --base-href=/my-wardrobe/
 
+        # Corrigir o index.html e a rota 404 para funcionar corretamente no GitHub Pages, que é necessário para aplicações SPA (Single Page Application).
       - name: Fix index.html and 404 routing for GitHub Pages
         run: |
           cd ./dist/my-wardrobe/browser
           cp index.csr.html index.html
           cp index.html 404.html
 
+        # Publicar a aplicação no GitHub Pages usando a ação do peaceiris, que é uma maneira fácil de publicar conteúdo estático no GitHub Pages.
       - name: Publicar no GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
