@@ -16,4 +16,3 @@ export class App {
   title = 'My Wardrobe';
 }
 
-const variavelInutil = 'Falhar o CI';
