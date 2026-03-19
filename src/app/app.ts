@@ -15,5 +15,3 @@ import { Modal } from './resources/modal/modal';
 export class App {
   title = 'My Wardrobe';
 }
-
-const test = 'test';
